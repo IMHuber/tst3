@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pushgroup.core.mapper.SubscribeMapper">
+
+    <resultMap id="subscription" type="com.pushgroup.core.domain.Subscription">
+        <id property="id" column="id"></id>
+        <result property="endpoint" column="endpoint"></result>
+        <result property="expirationTime" column="expiration_time"></result>
+        <result property="p256dh" column="p256dh"></result>
+        <result property="auth" column="auth"></result>
+        <result property="sourceUrl" column="source_url"></result>
+    </resultMap>
+
+    <insert id="subscribe" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        insert into subscription (endpoint, expiration_time, p256dh, auth, source_url)
+        values (#{endpoint}, #{expirationTime}, #{p256dh}, #{auth}, #{sourceUrl})
+    </insert>
+
+    <select id="getAll" resultMap="subscription">
+        select * from subscription
+    </select>
+
+</mapper>
