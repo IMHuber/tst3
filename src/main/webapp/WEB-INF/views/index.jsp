@@ -30,6 +30,23 @@
 </div>
 
 
+<form ng-submit="registerSwMain()">
+    <input type="submit" value="regSW">
+</form>
+
+<form ng-submit="askPermissionMain()">
+    <input type="submit" value="askPermission">
+</form>
+
+<form ng-submit="subscribeMain()">
+    <input type="submit" value="subscribe">
+</form>
+
+<form ng-submit="sendMsgMain()">
+    <input type="submit" value="send">
+</form>
+
+
 <div ng-view></div>
 
 </body>
