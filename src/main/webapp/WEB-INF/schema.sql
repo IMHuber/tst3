@@ -16,6 +16,8 @@ auth text,
 source_url text
 );
 
+ALTER TABLE subscription ADD COLUMN IF NOT EXISTS language character varying(128);
+
 
 CREATE TABLE IF NOT EXISTS subscription_category_ref (
 subscription_id bigint not null,
