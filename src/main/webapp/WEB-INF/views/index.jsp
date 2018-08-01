@@ -11,7 +11,7 @@
 
 
 
-<body>
+<body onload="registerSw()">
 <script src="/libs/angularjs/1.7.2/angular.js"></script>
 <script src="/libs/angularjs/1.7.2/angular-resource.js"></script>
 <script src="/libs/angularjs/1.7.2/angular-route.js"></script>
@@ -21,6 +21,16 @@
 <script src="resources/app/users/usersController.js"></script>
 <link rel="stylesheet" href="libs/bootstrap/4.1.1/css/bootstrap.css">
 
+<script>
+    function send() {
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.open("GET", "/api/send", false );
+        xmlHttp.send(null);
+        return xmlHttp.responseText;
+    }
+</script>
+
+
 <h2>Administrator Panel22</h2>
 <div class="home-section">
     <ul class="menu-list">
@@ -29,23 +39,7 @@
     </ul>
 </div>
 
-
-<form ng-submit="registerSwMain()">
-    <input type="submit" value="regSW">
-</form>
-
-<form ng-submit="askPermissionMain()">
-    <input type="submit" value="askPermission">
-</form>
-
-<form ng-submit="subscribeMain()">
-    <input type="submit" value="subscribe">
-</form>
-
-<form ng-submit="sendMsgMain()">
-    <input type="submit" value="send">
-</form>
-
+<button onclick="send()">send</button>
 
 <div ng-view></div>
 
