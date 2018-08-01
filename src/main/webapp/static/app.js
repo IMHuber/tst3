@@ -37,7 +37,7 @@ function run($rootScope, rolesDataService) {
 
             var swRegistration;
 
-            navigator.serviceWorker.register('sw.js')
+            navigator.serviceWorker.register('./sw.js')
                 .then(function(swReg) {
                     console.log('Service Worker is registered', swReg);
                     swRegistration = swReg;
@@ -108,7 +108,7 @@ function run($rootScope, rolesDataService) {
 
     // TODO: Move into a variable rather than register each time.
     function getSWRegistration() {
-        return navigator.serviceWorker.register('sw.js');
+        return navigator.serviceWorker.register('./sw.js');
     }
 
     function urlBase64ToUint8Array(base64String) {

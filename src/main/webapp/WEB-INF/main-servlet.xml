@@ -85,6 +85,7 @@
     <!--<mvc:resources mapping="/app/**" location="static"/>-->
     <mvc:resources mapping="/resources/**" location="/static/"/>
     <mvc:resources mapping="/libs/**" location="classpath:META-INF/resources/webjars/"/>
+    <mvc:resources mapping="/**" location="/static/sw/sw.js"/>
 
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/views/"/>
