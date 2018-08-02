@@ -24,7 +24,7 @@
 <script>
     function send() {
         var xmlHttp = new XMLHttpRequest();
-        xmlHttp.open("GET", "/pushapp-1.0-SNAPSHOT/api/send", false );
+        xmlHttp.open("GET", "/api/send", false );
         xmlHttp.send(null);
         return xmlHttp.responseText;
     }
