@@ -1,0 +1,75 @@
+<div style="padding-left: 20px;">
+    <h3 style="margin: auto; text-align: center; padding-top: 10px;">{{headingTitle}}</h3>
+
+
+    <div style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: flex-start; align-items: flex-start; max-width: 80%; margin: auto">
+
+        <div ng-repeat="condition in filters" style="padding-left: 50px; padding-top: 50px;">
+
+            <div style="display: flex; flex-direction: row; flex-wrap: nowrap; justify-content: flex-start; align-items: flex-start;">
+
+                <div ng-show="compareStr(condition.viewElementName, 'INPUT')">
+                    <label style="display:inline-block; border-bottom:2px solid #0074fd;">{{condition.displayName}}</label><br>
+                    <input type="text" ng-change="addSelectedValueToArray(condition)" ng-model="condition.selectedValue">
+                </div>
+
+                <div ng-show="compareStr(condition.viewElementName, 'SELECT')">
+                    <label style="display:inline-block; border-bottom:2px solid #0074fd;">{{condition.displayName}}</label><br>
+                    <select size="7" ng-model="condition.selectedValues" multiple>
+                        <option style="" value=""></option>
+                        <option ng-repeat="allowedValue in condition.allowedValues" value="{{allowedValue}}">{{allowedValue}}</option>
+                    </select>
+                </div>
+
+                <div ng-repeat="childCondition in condition.relatedChildrenCondition" style="padding-left: 50px;"
+                     ng-show="condition.selectedValues.length > 0 && condition.selectedValues.indexOf(childCondition.relatedParentValue) !== -1">
+
+                    <label style="border-bottom:2px solid #0074fd;">{{childCondition.displayName}}</label><br>
+                    <select size="7" ng-model="childCondition.selectedValues" multiple>
+                        <option style="" value=""></option>
+                        <option ng-repeat="childAv in childCondition.allowedValues" value="{{childAv}}">{{childAv}}</option>
+                    </select>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+
+    <div style="margin: auto; text-align: center; padding-top: 50px;">
+        <button type="button" class="btn btn-success" ng-click="getSubscriptions()">Search</button>
+    </div>
+
+
+    <div style="max-width: 70%; margin: auto; margin-top: 50px;">Total count: {{subscriptionRes.total}}</div>
+
+    <table class="table table-striped table-condensed table-hover" style="max-width: 70%; margin: auto; margin-top: 20px; border: 1px solid black">
+        <tr style="border: 2px solid black">
+            <th>id</th>
+            <th>country name</th>
+            <th>city name</th>
+            <th>browser name</th>
+            <th>major version</th>
+            <th>created</th>
+        </tr>
+        <tr ng-repeat="sp in subscriptionRes.subscriptions | limitTo:5" style="max-height: 50px;">
+            <td>{{sp.id}}</td>
+            <td>{{sp.geoInfo.countryName}}</td>
+            <td>{{sp.geoInfo.cityName}}</td>
+            <td>{{sp.browserInfo.browserName}}</td>
+            <td>{{sp.browserInfo.majorVersion}}</td>
+            <td>{{sp.createdTs}}</td>
+        </tr>
+    </table>
+
+
+    <div style="margin: auto; text-align: center; padding-top: 50px; margin-bottom: 50px;">
+        <button type="button" class="btn btn-success" ng-click="send()">Send</button>
+    </div>
+
+
+    
+
+</div>
+

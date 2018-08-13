@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:security="http://www.springframework.org/schema/security"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
-       xmlns:p="http://www.springframework.org/schema/p" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/context
        http://www.springframework.org/schema/context/spring-context.xsd
        http://www.springframework.org/schema/mvc
-       http://www.springframework.org/schema/mvc/spring-mvc.xsd
-       http://www.springframework.org/schema/security
-       http://www.springframework.org/schema/security/spring-security.xsd http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
+       http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+
+    <!--<import resource="dao-context.xml"/>-->
 
 
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
@@ -23,59 +23,12 @@
         </property>
     </bean>
 
-    <context:component-scan base-package="com.pushgroup.core"/>
-
-
-
-    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="driverClassName" value="${db.public.driver}"/>
-        <property name="url" value="${db.public.url}"/>
-        <property name="schema" value="${db.public.schema}"/>
-        <property name="username" value="${db.public.username}"/>
-        <property name="password" value="${db.public.password}"/>
-    </bean>
-
-    <bean id="transManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager" name="transManager">
-        <property name="dataSource" ref="dataSource"/>
-    </bean>
-
-    <bean id="sessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-        <property name="dataSource" ref="dataSource"/>
-    </bean>
-
-    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="com.pushgroup.core.mapper"/>
-        <property name="sqlSessionFactoryBeanName" value="sessionFactory"/>
-    </bean>
-
-    <jdbc:initialize-database data-source="dataSource">
-        <jdbc:script location="/WEB-INF/schema.sql" encoding="UTF-8" />
-    </jdbc:initialize-database>
-
-
-    <!--<bean id="httpFirewall" class="org.springframework.security.web.firewall.StrictHttpFirewall" p:allowSemicolon="true" p:allowUrlEncodedSlash="true" p:allowBackSlash="true"/>-->
-    <!--<security:http-firewall ref="httpFirewall"/>-->
-
-    <!--<security:http use-expressions="true" entry-point-ref="forbiddenEntryPoint">-->
-        <!--<security:intercept-url pattern="/" access="permitAll()"/>-->
-
-        <!--<security:anonymous username="anonymous" granted-authority="IS_AUTHENTICATED_ANONYMOUSLY"/>-->
-    <!--</security:http>-->
-
-    <!--<security:authentication-manager alias="authenticationManager">-->
-        <!--<security:authentication-provider>-->
-            <!--<security:user-service>-->
-                <!--<security:user name="q" password="q" authorities="ROLE_USER, ROLE_ADMIN" />-->
-                <!--<security:user name="bob" password="bobspassword" authorities="ROLE_USER" />-->
-            <!--</security:user-service>-->
-        <!--</security:authentication-provider>-->
-    <!--</security:authentication-manager>-->
-
-
-    <bean id="forbiddenEntryPoint" class="org.springframework.security.web.authentication.Http403ForbiddenEntryPoint"/>
-
-
+    <!-- Включает такие теги как @RequestMapping, @RestController и т.д., т.е. те, которые нужны для работы Spring MVC -->
     <mvc:annotation-driven/>
+    <context:annotation-config/>
+    <context:component-scan base-package="com.pushgroup.core, com.pushgroup.security"/>
+
+
 
     <!--<mvc:resources mapping="/libs/**" location="classpath:META-INF/resources/webjars"/>-->
     <!--<mvc:resources mapping="/**" location="classpath:static"/>-->

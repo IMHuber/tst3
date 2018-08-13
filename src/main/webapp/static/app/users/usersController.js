@@ -1,5 +1,14 @@
+(function () {
+    //'use strict'
 
+    angular
+        .module('app')
+        .controller('usersController', usersController);
 
-app.controller('usersController', function($scope) {
-    $scope.headingTitle = "User List";
-});
+    function usersController($scope, rolesDataService) {
+        angular.extend($scope, {
+        });
+
+        alert(111111);
+    }
+})();
