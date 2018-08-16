@@ -1,11 +1,11 @@
 
 angular
-    .module('app', ['ui.router'])
+    .module('app', ['ui.router', 'ngMaterial', 'ngAnimate', 'ngAria'])
     .config(config)
     .run(run);
 
 
-function config($stateProvider){
+function config($stateProvider, $mdIconProvider){
     $stateProvider
         .state('login', {
             title: 'login',
@@ -30,7 +30,9 @@ function config($stateProvider){
             url: '/roles',
             templateUrl: 'resources/app/roles/roles.html',
             controller: 'rolesController'
-        })
+        });
+    
+    $mdIconProvider.defaultIconSet('resources/mdi-icons.svg', 24);
 }
 
 function run($rootScope, $state, loginDataService) {

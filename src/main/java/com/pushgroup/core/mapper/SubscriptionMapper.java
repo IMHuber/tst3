@@ -1,9 +1,6 @@
 package com.pushgroup.core.mapper;
 
-import com.pushgroup.core.domain.Browser;
-import com.pushgroup.core.domain.Category;
-import com.pushgroup.core.domain.IpLocation;
-import com.pushgroup.core.domain.Subscription;
+import com.pushgroup.core.domain.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -19,6 +16,7 @@ public interface SubscriptionMapper {
     void insertCategory(Category category);
     void insertSubCatRef(@Param("subId") Long subId, @Param("catId") Long catId);
     void deleteSubCatRef(@Param("subId") Long subId);
+    void insertPayload(Payload payload);
 
     List<Browser> getBrowsersByNameAndMajorVersion(@Param("name") String name, @Param("majorVersion") String majorVersion);
     Set<Subscription> getAllSubscriptions();

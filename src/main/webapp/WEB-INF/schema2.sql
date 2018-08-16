@@ -13,8 +13,11 @@ CREATE TABLE IF NOT EXISTS core.ip2location_db3 (
 
 --COPY core.ip2location_db3 FROM '/Users/ivan/IdeaProjects/tst/pushapp/src/main/resources/IP2LOCATION-LITE-DB3.CSV' WITH CSV QUOTE AS '"';
 
-ALTER TABLE core.ip2location_db3 ADD COLUMN IF NOT EXISTS id SERIAL;
-update core.ip2location_db3 set city_name = 'St Petersburg' where city_name = 'Saint Petersburg';
+ALTER TABLE core.ip2location_db3
+  ADD COLUMN IF NOT EXISTS id SERIAL;
+update core.ip2location_db3
+set city_name = 'St Petersburg'
+where city_name = 'Saint Petersburg';
 
 
 CREATE TABLE IF NOT EXISTS core.category (
@@ -39,7 +42,7 @@ CREATE TABLE IF NOT EXISTS core.subscription (
   country_code      character(2),
   country_name      character varying(64),
   city_name         character varying(128),
-  region_name            character varying(128),
+  region_name       character varying(128),
   ip2location_id    bigint,
   brw_name          character varying(128),
   brw_major_version character varying(64),
@@ -49,8 +52,9 @@ CREATE TABLE IF NOT EXISTS core.subscription (
   created_ts        timestamp default now()
 );
 
-CREATE TABLE IF NOT EXISTS core.notification (
+CREATE TABLE IF NOT EXISTS core.payload (
   id                 serial primary key,
+  title               text,
   body               text,
   icon               text,
   image              text,
@@ -60,13 +64,15 @@ CREATE TABLE IF NOT EXISTS core.notification (
   dir                character varying(8),
   tag                character varying(64),
   data               text,
-  requireInteraction boolean,
+  require_interaction boolean,
   renotify           boolean,
   silent             boolean,
   actions            text,
   timestamp          timestamp,
-  offer_id           text,
-  account_id         text,
+  offer_url         text,
+  offer_name           text,
+  account_name         text,
+  sub_total          bigint,
   created_by         character varying(128),
   created_ts         timestamp default now()
 );

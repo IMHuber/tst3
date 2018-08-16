@@ -6,12 +6,11 @@
     <title>Push App</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="resources/app.css">
 </head>
 
 
 
-<body onload="registerSw()">
+<body onload="registerSw()" style="min-height:100%; height:auto;">
 
 
 <script type="text/javascript">
@@ -101,9 +100,8 @@
 
                 saveSubscription(subJson)
                     .then(function (response) {
-                        console.log('Subscribed successfully: ', response.data);
-                    })
-                    .catch(console.log("error"));
+                        console.log('Subscribed finished. Status: ', response);
+                    });
 
                 return pushSubscription;
             });
@@ -114,17 +112,14 @@
         var url = "/api/subscription/subscribe";
         //var url = "https://env-9888409.jelastic.regruhosting.ru/api/subscribe";
         //var url = "http://pushsend-pushgroup.193b.starter-ca-central-1.openshiftapps.com/pushapp-1.0-SNAPSHOT/api/subscribe";
-        xhr.open("POST", url, true);
 
+        xhr.open("POST", url, false);
         xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-                var json = JSON.parse(xhr.responseText);
-                console.log(json.email + ", " + json.password);
-            }
-        };
-        xhr.send(JSON.stringify(subJson));
+        return new Promise(function(resolve, reject) {
+            xhr.send(JSON.stringify(subJson));
+            resolve(xhr.status);
+        })
     }
 
 
@@ -233,7 +228,7 @@
     function getIp() {
         try {
             var xmlHttp = new XMLHttpRequest();
-            xmlHttp.open("GET", 'https://api.ipify.org/', false );
+            xmlHttp.open("GET", 'https://api.ipify.org/', false);
             xmlHttp.send(null);
             return xmlHttp.responseText;
         } catch (e) {
@@ -272,17 +267,12 @@
 </script>
 
 
-
-
-
-
-
-
-
-
 <script src="/libs/angularjs/1.7.2/angular.js"></script>
 <script src="/libs/angular-ui-router/1.0.15/angular-ui-router.js"></script>
 <script src="/libs/angularjs/1.7.2/angular-resource.js"></script>
+<script src="/libs/angular-animate/1.7.2/angular-animate.js"></script>
+<script src="/libs/angular-material/1.1.5/angular-material.js"></script>
+<script src="/libs/angular-aria/1.6.9/angular-aria.min.js"></script>
 <script src="resources/app.js"></script>
 <script src="resources/app/login/loginController.js"></script>
 <script src="resources/app/login/loginDataService.js"></script>
@@ -291,7 +281,12 @@
 <script src="resources/app/roles/rolesController.js"></script>
 <script src="resources/app/roles/rolesDataService.js"></script>
 <script src="resources/app/users/usersController.js"></script>
+<script src="resources/app/notifications/notificationsController.js"></script>
+<script src="resources/app/notifications/notificationsDataService.js"></script>
+
 <link rel="stylesheet" href="libs/bootstrap/4.1.1/css/bootstrap.css">
+<link rel="stylesheet" href="libs/angular-material/1.1.5/angular-material.min.css"/>
+<link rel="stylesheet" href="resources/css/app.css">
 
 
 <header style="background-color: black">
@@ -307,7 +302,6 @@
         </div>
     </nav>
 </header>
-
 
 <div ui-view></div>
 

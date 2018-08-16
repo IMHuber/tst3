@@ -129,6 +129,13 @@ public class SubscriptionDto {
         return res;
     }
 
+    public List<Subscription> fromDtoList(List<? extends SubscriptionDto> subscriptions) {
+        if(isNull(subscriptions)) {
+            return Collections.emptyList();
+        }
+        return subscriptions.stream().map(SubscriptionDto::toDomain).collect(Collectors.toList());
+    }
+
     public static SubscriptionDto fromDomain(Subscription sub) {
         SubscriptionDto dto = new SubscriptionDto();
         dto.setId(sub.getId());
@@ -245,12 +252,6 @@ public class SubscriptionDto {
 
         public void setLanguage(String language) {
             this.language = language;
-        }
-
-        @Override
-        public String toString() {
-            return "{'browserName':'" + browserName + "', 'fullVersion':'" + fullVersion + "','majorVersion':'" + majorVersion +
-                    "', 'navAppName':'" + navAppName + "', 'navUserAgent':'" + navUserAgent + "', 'language':'" + language + "'}";
         }
     }
 

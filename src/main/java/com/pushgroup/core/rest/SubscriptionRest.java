@@ -2,10 +2,7 @@ package com.pushgroup.core.rest;
 
 
 
-import com.pushgroup.core.dto.FiltersDto;
-import com.pushgroup.core.dto.SendingDataDto;
-import com.pushgroup.core.dto.SubscriptionDto;
-import com.pushgroup.core.dto.SubscriptionsInfoDto;
+import com.pushgroup.core.dto.*;
 import com.pushgroup.core.filtering.Condition;
 import com.pushgroup.core.service.SubscriptionService;
 import org.slf4j.Logger;
@@ -49,7 +46,11 @@ public class SubscriptionRest {
     @RequestMapping(path = "/send", method = RequestMethod.POST)
     public @ResponseBody ResponseEntity send(@RequestBody SendingDataDto sendingDataDto){
         try {
-            subscriptionService.send(sendingDataDto.getConditions(), null);
+            if(sendingDataDto.getPayload() == null)
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).contentType(MediaType.TEXT_PLAIN).body("Payload can't be null");
+            
+            SubscriptionDto dto = new SubscriptionDto();
+            subscriptionService.send(dto.fromDtoList(sendingDataDto.getSubscriptions()), sendingDataDto.getPayload().toDomain());
             return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch (Exception e) {
             LOGGER.error("post to api/subscription/send failed. Error: ", e);

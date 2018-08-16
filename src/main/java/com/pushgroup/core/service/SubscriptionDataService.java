@@ -2,29 +2,25 @@ package com.pushgroup.core.service;
 
 
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.pushgroup.core.domain.*;
-import com.pushgroup.core.dto.FiltersDto;
 import com.pushgroup.core.filtering.Condition;
 import com.pushgroup.core.filtering.FilterConditionBuilder;
 import com.pushgroup.core.mapper.SubscriptionMapper;
 import com.pushgroup.core.util.Helper;
-import nl.martijndwars.webpush.Notification;
-import nl.martijndwars.webpush.PushService;
-import nl.martijndwars.webpush.Utils;
-import org.apache.commons.io.IOUtils;
-import org.apache.http.HttpResponse;
+import com.pushgroup.security.user.PushUserDetails;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import java.nio.charset.StandardCharsets;
 import java.security.Security;
 import java.util.*;
-import java.util.stream.Collectors;
 
 
 @Service
@@ -94,10 +90,24 @@ public class SubscriptionDataService implements SubscriptionService {
     }
 
     @Override
-    public void send(List<Condition> conditions, Payload payload) {
+    public void send(List<Subscription> subscriptions, Payload payload) {
         LOGGER.info("Start SubscriptionDataService.send for Payload[{}]", payload);
-        sender.send(conditions, payloadToByteArray(payload));
+        sender.send(subscriptions, payloadToByteArray(payload));
+
+        insertPayload(payload, (long) subscriptions.size());
         LOGGER.info("Finish SubscriptionDataService.send");
+    }
+
+    private void insertPayload(Payload payload, Long subsTotal) {
+        LOGGER.info("Start to insert Payload[{}]", payload);
+        try {
+            payload.setSubTotal(subsTotal);
+            payload.setCreatedBy(((PushUserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername());
+            subscribeMapper.insertPayload(payload);
+            LOGGER.info("Finish inserting Payload successfully.");
+        } catch (Exception e) {
+            LOGGER.error("Failed to insert Payload. Error: ", e);
+        }
     }
 
     @Override
@@ -121,10 +131,41 @@ public class SubscriptionDataService implements SubscriptionService {
 
     private byte[] payloadToByteArray(Payload payload) {
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("title", "Hello");
-        jsonObject.addProperty("message", "World");
+        jsonObject.addProperty("title", payload.getTitle());
+        jsonObject.addProperty("body", payload.getBody());
+        jsonObject.add("data", buildDataJson(payload));
+        jsonObject.addProperty("iconUrl", payload.getIconUrl());
+        jsonObject.addProperty("imageUrl", payload.getImageUrl());
+        jsonObject.addProperty("badgeUrl", payload.getBadgeUrl());
+        jsonObject.addProperty("soundUrl", payload.getSoundUrl());
+        jsonObject.addProperty("vibrate", payload.getVibrateAsJson());
+        
+        if(!CollectionUtils.isEmpty(payload.getActions())) {
+            JsonArray actArr = new JsonArray();
+            for(Payload.Action action : payload.getActions()) {
+                JsonObject actJson = new JsonObject();
+                actJson.addProperty("action", action.getAction());
+                actJson.addProperty("title", action.getTitle());
+                actJson.addProperty("icon", action.getIconUrl());
+                actArr.add(actJson);
+            }
+            jsonObject.add("actions", actArr);
+        }
+        jsonObject.addProperty("dir", payload.getDir());
+        jsonObject.addProperty("tag", payload.getTag());
+        jsonObject.addProperty("requireInteraction", payload.getRequireInteraction());
+        jsonObject.addProperty("renotify", payload.getRenotify());
+        jsonObject.addProperty("silent", payload.getSilent());
+        jsonObject.addProperty("timestamp", payload.getTimestamp() != null? payload.getTimestamp().toString() : null);
 
         return jsonObject.toString().getBytes();
+    }
+
+    private JsonObject buildDataJson(Payload payload) {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("offerUrl", payload.getOfferUrl());
+        jsonObject.addProperty("formData", payload.getData());
+        return jsonObject;
     }
 
 }

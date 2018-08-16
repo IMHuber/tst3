@@ -17,10 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
 import static com.pushgroup.core.service.Sender.PushServiceType.KEYS_CHROME;
 import static com.pushgroup.core.service.Sender.PushServiceType.KEYS_FIREFOX;
@@ -38,11 +35,8 @@ public class Sender {
 
 
 
-    public void send(List<Condition> conditions, byte[] payloadByteArray) {
+    public void send(List<Subscription> subscriptions, byte[] payload) {
         LOGGER.info("Start to prepare sending notification");
-
-        String condition = Helper.buildWhereClause(conditions);
-        Set<Subscription> subscriptions = subscribeMapper.getSubscriptionsByCondition(condition);
         LOGGER.info("Number of subscriptions to send is " + subscriptions.size());
 
         PushService pushService = null;
@@ -58,7 +52,7 @@ public class Sender {
             try {
                 LOGGER.info("Prepare notification for Subscription[{}] and start to send", subscription.getId());
 
-                Notification notification = new Notification(subscription.getEndpoint(), subscription.getP256dh(), subscription.getAuth(), payloadByteArray);
+                Notification notification = new Notification(subscription.getEndpoint(), subscription.getP256dh(), subscription.getAuth(), payload);
                 HttpResponse httpResponse = pushService.send(notification);
                 int status = httpResponse.getStatusLine().getStatusCode();
 

@@ -1,0 +1,120 @@
+<form novalidate ng-submit="submit(notification)">
+    <md-dialog aria-label="Create Notification" style="width: 700px;">
+
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Create Notification</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="cancel()">
+                    <md-icon md-svg-src="close" aria-label="Close dialog"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+
+        <md-toolbar ng-show="serverError" class="md-warn">
+            <div class="md-toolbar-tools">
+                Server error {{serverError}}
+            </div>
+        </md-toolbar>
+
+        <md-dialog-content>
+            <div layout="row" class="md-padding">
+                <div flex="50">
+                    <md-input-container style="width: 100%;">
+                        <label>Offer url</label>
+                        <input ng-model="notification.offerUrl" required>
+                    </md-input-container>
+                </div>
+                <div flex="50">
+                    <md-input-container style="width: 100%;">
+                        <label>Offer name</label>
+                        <input ng-model="notification.offerName" required>
+                    </md-input-container>
+                </div>
+            </div>
+            <div layout="row" class="md-padding" style="margin-top: -8%">
+                <div flex="100">
+                    <md-input-container style="width: 100%;">
+                        <label>Account name</label>
+                        <input ng-model="notification.accountName" required>
+                    </md-input-container>
+                </div>
+            </div>
+            <div layout="row" class="md-padding" style="margin-top: -8%">
+                <div flex="100">
+                    <md-input-container style="width: 100%;">
+                        <label>Title</label>
+                        <input ng-model="notification.title">
+                    </md-input-container>
+                </div>
+            </div>
+            <div layout="row" class="md-padding" style="margin-top: -8%">
+                <div flex="50">
+                    <md-input-container style="width: 100%;">
+                        <label>Body</label>
+                        <textarea ng-model="notification.body" rows="3" max-rows="4" required></textarea>
+                    </md-input-container>
+                </div>
+                <div flex="50">
+                    <md-input-container style="width: 100%;">
+                        <label>Data</label>
+                        <textarea ng-model="notification.data" rows="3" max-rows="4"></textarea>
+                    </md-input-container>
+                </div>
+            </div>
+            <div layout="row" class="md-padding" style="margin-top: -8%">
+                <div flex="50">
+                    <md-input-container style="width: 100%;">
+                        <label>Icon url</label>
+                        <input ng-model="notification.iconUrl">
+                    </md-input-container>
+                </div>
+                <div flex="50">
+                    <md-input-container style="width: 100%;">
+                        <label>Image url</label>
+                        <input ng-model="notification.imageUrl">
+                    </md-input-container>
+                </div>
+            </div>
+            <div layout="row" class="md-padding" style="margin-top: -8%">
+                <div flex="50">
+                    <md-input-container style="width: 100%;">
+                        <label>Badge url</label>
+                        <input ng-model="notification.badgeUrl">
+                    </md-input-container>
+                </div>
+                <div flex="50">
+                    <md-input-container style="width: 100%;">
+                        <label>Sound url</label>
+                        <input ng-model="notification.soundUrl">
+                    </md-input-container>
+                </div>
+            </div>
+            <div layout="row" class="md-padding" style="margin-top: -8%">
+                <div flex="100">
+                    <md-input-container style="width: 100%;">
+                        <label>
+                            Actions as JSON. Format:
+                            [{"action":"x", "title":"x", "icon":"x"}]
+                        </label>
+                        <textarea ng-model="notification.actions" rows="3" max-rows="4"></textarea>
+                    </md-input-container>
+                </div>
+            </div>
+        </md-dialog-content>
+
+        <md-dialog-actions layout="row">
+            <!--<button ng-click="submit(notification)" class="btn btn-info">-->
+            <!--Send to test Subs-->
+            <!--</button>-->
+            <!--<span flex></span>-->
+            <!--<button type="submit" class="btn btn-success" ng-disabled="!notification.offerUrl || !notification.offerName || !notification.accountName || !notification.body">-->
+            <!--Send-->
+            <!--</button>-->
+            <button type="submit" class="btn btn-success">
+                Send
+            </button>
+        </md-dialog-actions>
+
+    </md-dialog>
+</form>
