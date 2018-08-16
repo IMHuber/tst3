@@ -70,7 +70,7 @@ CREATE TABLE IF NOT EXISTS core.payload (
   actions            text,
   timestamp          timestamp,
   offer_url         text,
-  offer_name           text,
+  offer_id           text,
   account_name         text,
   sub_total          bigint,
   created_by         character varying(128),
