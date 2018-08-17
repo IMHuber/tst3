@@ -10,9 +10,9 @@
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="${db.public.driver}"/>
         <property name="url" value="${db.public.url}"/>
-        <!--<property name="schema" value="${db.public.schema}"/>-->
-        <!--<property name="username" value="${db.public.username}"/>-->
-        <!--<property name="password" value="${db.public.password}"/>-->
+        <property name="schema" value="${db.public.schema}"/>
+        <property name="username" value="${db.public.username}"/>
+        <property name="password" value="${db.public.password}"/>
     </bean>
 
     <bean id="transManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager" name="transManager">
