@@ -15,8 +15,8 @@ public class Payload {
     private String vibrateAsJson;
     private String dir;
     private String tag;
-    private Boolean requireInteraction = true;
-    private Boolean renotify = true;
+    private Boolean requireInteraction;
+    private Boolean renotify;
     private Boolean silent;
     private List<Action> actions;
     private String actionsAsJson;

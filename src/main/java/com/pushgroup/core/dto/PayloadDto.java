@@ -28,8 +28,8 @@ public class PayloadDto {
     private List<Integer> vibrate;
     private String dir;
     private String tag;
-    private Boolean requireInteraction;
-    private Boolean renotify;
+    private Boolean requireInteraction = true;
+    private Boolean renotify = true;
     private Boolean silent;
     private List<ActionDto> actions;
     private Timestamp timestamp;
@@ -191,7 +191,7 @@ public class PayloadDto {
         res.setBadgeUrl(this.badgeUrl);
         res.setSoundUrl(this.soundUrl);
         res.setDir(this.dir);
-        res.setTag(this.tag);
+        res.setTag(this.tag != null? this.tag : this.title + "_" + this.body);
         res.setRequireInteraction(this.requireInteraction);
         res.setRenotify(this.renotify);
         res.setSilent(this.silent);

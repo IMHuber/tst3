@@ -5,7 +5,7 @@
 
     <!--<service>cloudsql</service>-->
 
-    <system-properties>
-        <property name="cloudsql" value="jdbc:postgresql://google/postgres?useSSL=false&amp;socketFactoryArg=pushapp-212022:us-central1:postgres-1&amp;socketFactory=com.google.cloud.sql.postgres.SocketFactory&amp;user=postgres&amp;password=PkrOLv6Ndooyr99H" />
-    </system-properties>
+    <!--<system-properties>-->
+        <!--<property name="cloudsql" value="jdbc:postgresql://google/postgres?useSSL=false&amp;socketFactoryArg=pushapp-212022:us-central1:postgres-1&amp;socketFactory=com.google.cloud.sql.postgres.SocketFactory&amp;user=postgres&amp;password=PkrOLv6Ndooyr99H" />-->
+    <!--</system-properties>-->
 </appengine-web-app>

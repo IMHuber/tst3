@@ -16,6 +16,7 @@ self.addEventListener('push', function(event) {
         actions: response.actions,
         renotify: response.renotify,
         requireInteraction: response.requireInteraction,
+        tag: response.tag,
 
         //mobile only
         badge: response.badgeUrl,
