@@ -163,30 +163,6 @@
       <version>42.2.4</version>
     </dependency>
 
-    <dependency>
-      <groupId>com.google.cloud.sql</groupId>
-      <artifactId>postgres-socket-factory</artifactId>
-      <version>1.0.10</version>
-    </dependency>
-
-    <dependency>
-      <groupId>com.google.appengine</groupId>
-      <artifactId>appengine-api-1.0-sdk</artifactId>
-      <version>${appengine.target.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.google.appengine</groupId>
-      <artifactId>appengine-testing</artifactId>
-      <version>${appengine.target.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.google.appengine</groupId>
-      <artifactId>appengine-api-stubs</artifactId>
-      <version>${appengine.target.version}</version>
-      <scope>test</scope>
-    </dependency>
-
     
     <dependency>
       <groupId>javax.servlet</groupId>
@@ -245,18 +221,6 @@
           <target>8</target>
         </configuration>
       </plugin>
-
-      <plugin>
-        <groupId>com.google.cloud.tools</groupId>
-        <artifactId>appengine-maven-plugin</artifactId>
-        <version>${appengine-maven-plugin-version}</version>
-      </plugin>
-
-      <!--<plugin>-->
-        <!--<groupId>com.google.appengine</groupId>-->
-        <!--<artifactId>appengine-maven-plugin</artifactId>-->
-        <!--<version>1.9.64</version>-->
-      <!--</plugin>-->
       
     </plugins>
   </build>
