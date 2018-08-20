@@ -9,6 +9,8 @@
             login: login
         });
 
+        $rootScope.landing = false;
+
         function login(username, password) {
             loginDataService.login(username, password)
                 .then(function (response) {

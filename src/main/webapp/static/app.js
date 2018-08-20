@@ -18,18 +18,6 @@ function config($stateProvider, $mdIconProvider){
             url: '/main',
             templateUrl: 'resources/app/main/main.html',
             controller: 'mainController'
-        })
-        .state('users', {
-            title: 'usersState',
-            url: '/users',
-            templateUrl: 'resources/app/users/users.html',
-            controller: 'usersController'
-        })
-        .state('roles', {
-            title: 'rolesState',
-            url: '/roles',
-            templateUrl: 'resources/app/roles/roles.html',
-            controller: 'rolesController'
         });
     
     $mdIconProvider.defaultIconSet('resources/mdi-icons.svg', 24);
@@ -38,6 +26,12 @@ function config($stateProvider, $mdIconProvider){
 function run($rootScope, $state, loginDataService) {
     $rootScope.$state = $state;
     $rootScope.logout = logout;
+
+    $rootScope.apiBaseUrl = '/pushapp-bestnews';
+    //$rootScope.apiBaseUrl = '';
+
+    //$locationProvider.html5Mode(true);
+    //var baseUrl = window.location.origin;
 
     loginDataService.getCurrentUser()
         .then(function (response) {

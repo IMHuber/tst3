@@ -13,11 +13,12 @@ CREATE TABLE IF NOT EXISTS core.ip2location_db3 (
 
 --COPY core.ip2location_db3 FROM '/Users/ivan/IdeaProjects/tst/pushapp/src/main/resources/IP2LOCATION-LITE-DB3.CSV' WITH CSV QUOTE AS '"';
 
-ALTER TABLE core.ip2location_db3
-  ADD COLUMN IF NOT EXISTS id SERIAL;
-update core.ip2location_db3
-set city_name = 'St Petersburg'
-where city_name = 'Saint Petersburg';
+-- ALTER TABLE core.ip2location_db3
+--   ADD COLUMN IF NOT EXISTS id SERIAL;
+--
+-- update core.ip2location_db3
+-- set city_name = 'St Petersburg'
+-- where city_name = 'Saint Petersburg';
 
 
 CREATE TABLE IF NOT EXISTS core.category (

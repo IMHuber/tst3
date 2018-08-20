@@ -35,13 +35,6 @@ public class SubscriptionDataService implements SubscriptionService {
     private Sender sender;
 
 
-    public SubscriptionDataService() {
-        // Add BouncyCastle as an algorithm provider
-        if (Security.getProvider(BouncyCastleProvider.PROVIDER_NAME) == null) {
-            Security.addProvider(new BouncyCastleProvider());
-        }
-    }
-
     @Override
     public void subscribe(Subscription subscription) {
         LOGGER.info("Start to subscribe.");

@@ -20,7 +20,7 @@
 
             $http({
                 method: 'POST',
-                url: '/api/auth/login',
+                url: $rootScope.apiBaseUrl + '/api/auth/login',
                 headers: {'Content-Type': 'application/x-www-form-urlencoded', 'X-Login-Ajax-Call': 'true'},
                 transformRequest: function (obj) {
                     var str = [];
@@ -46,7 +46,7 @@
 
         function logout() {
             var deferred = $q.defer();
-            $http.post('/api/auth/logout')
+            $http.post($rootScope.apiBaseUrl + '/api/auth/logout')
                 .then(function (response) {
                     $rootScope.isAuthenticated = false;
                     deferred.resolve(response);
@@ -60,7 +60,7 @@
         function getCurrentUser() {
             var def = $q.defer();
             
-            $http.get('/api/auth/user')
+            $http.get($rootScope.apiBaseUrl + '/api/auth/user')
                 .then(function (response) {
                     def.resolve(response);
                 })

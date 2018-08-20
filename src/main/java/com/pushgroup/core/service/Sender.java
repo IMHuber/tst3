@@ -11,12 +11,14 @@ import nl.martijndwars.webpush.PushService;
 import nl.martijndwars.webpush.Utils;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.security.Security;
 import java.util.List;
 
 import static com.pushgroup.core.service.Sender.PushServiceType.KEYS_CHROME;
@@ -32,6 +34,14 @@ public class Sender {
 
     @Autowired
     private SubscriptionMapper subscribeMapper;
+
+
+    public Sender() {
+        // Add BouncyCastle as an algorithm provider
+        if (Security.getProvider(BouncyCastleProvider.PROVIDER_NAME) == null) {
+            Security.addProvider(new BouncyCastleProvider());
+        }
+    }
 
 
 

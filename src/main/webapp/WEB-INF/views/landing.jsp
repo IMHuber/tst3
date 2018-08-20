@@ -1,16 +1,12 @@
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html ng-app="app">
+<html>
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Push App</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Title</title>
 </head>
 
 
-
-<body onload="registerSw()" style="min-height:100%; height:auto;">
+<body onload="registerSw()" style="background-color: black">
 
 
 <script type="text/javascript">
@@ -221,7 +217,7 @@
             console.log(e);
         }
     }
-    
+
     function replaceApos(val) {
         return val.replace(/["']/g, "");
     }
@@ -253,7 +249,7 @@
                 xmlHttp.open("GET", geoApis[i].url, false);
                 xmlHttp.send(null);
                 var response = JSON.parse(xmlHttp.responseText);
-                
+
                 if(response[geoApis[i].countryCode] != null) {
                     return {ip: response[geoApis[i].ip], countryCode: response[geoApis[i].countryCode], countryName: response[geoApis[i].countryName],
                         cityName: response[geoApis[i].cityName], regionName: response[geoApis[i].regionName]};
@@ -268,41 +264,9 @@
 </script>
 
 
-<script src="libs/angularjs/1.7.2/angular.js"></script>
-<script src="libs/angular-ui-router/1.0.15/angular-ui-router.js"></script>
-<script src="libs/angularjs/1.7.2/angular-resource.js"></script>
-<script src="libs/angular-animate/1.7.2/angular-animate.js"></script>
-<script src="libs/angular-material/1.1.5/angular-material.js"></script>
-<script src="libs/angular-aria/1.6.9/angular-aria.min.js"></script>
-<script src="resources/app.js"></script>
-<script src="resources/app/login/loginController.js"></script>
-<script src="resources/app/login/loginDataService.js"></script>
-<script src="resources/app/main/mainController.js"></script>
-<script src="resources/app/main/mainDataService.js"></script>
-<script src="resources/app/users/usersController.js"></script>
-<script src="resources/app/notifications/notificationsController.js"></script>
-<script src="resources/app/notifications/notificationsDataService.js"></script>
-
-<link rel="stylesheet" href="libs/bootstrap/4.1.1/css/bootstrap.css">
-<link rel="stylesheet" href="libs/angular-material/1.1.5/angular-material.min.css"/>
-<link rel="stylesheet" href="resources/css/app.css">
+<h3 style="color: red; margin-left: 30%;">SOSALOVO</h3>
 
 
-<header style="background-color: black">
-    <nav class="navbar navbar-default">
-        <div class="container">
-            <div class="navbar-header" style="color: #007bff;">
-                <a class="navbar-brand">Push The Tempo</a>
-            </div>
-
-            <div class="nav navbar-nav navbar-right" style="color: #007bff;" ng-if="isAuthenticated">
-                <a class="navbar-brand" ng-click="logout()" style="cursor: pointer">Logout</a>
-            </div>
-        </div>
-    </nav>
-</header>
-
-<div ui-view></div>
 
 </body>
 </html>
