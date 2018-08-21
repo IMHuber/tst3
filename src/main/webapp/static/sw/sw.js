@@ -4,6 +4,8 @@ self.addEventListener('push', function(event) {
     console.log('111');
     console.log('[Service Worker] Push had this data.text:' + event.data.text());
 
+    console.log('body: ' + response.body);
+
     var response = JSON.parse(event.data.text());
 
     var title = response.title;

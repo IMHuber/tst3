@@ -121,6 +121,9 @@ public class SubscriptionDataService implements SubscriptionService {
     }
 
     private byte[] payloadToByteArray(Payload payload) {
+
+        LOGGER.info("111111111111--body:--111111111111 = " + payload.getBody());
+
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("title", payload.getTitle());
         jsonObject.addProperty("body", payload.getBody());
