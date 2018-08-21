@@ -44,7 +44,7 @@ public class SubscriptionDataService implements SubscriptionService {
     }
 
     private void insertSubscription(Subscription subscription) {
-        LOGGER.info("Start to insert Subscription. ", subscription);
+        LOGGER.info("Start to insert Subscription[{}]", subscription);
         if(StringUtils.isEmpty(subscription.getCountryCode())) {
             try{
                 IpLocation ipLocation = subscribeMapper.getIpLocationByIp(subscription.getIp());
@@ -87,15 +87,13 @@ public class SubscriptionDataService implements SubscriptionService {
         LOGGER.info("Start SubscriptionDataService.send for Payload[{}]", payload);
         sender.send(subscriptions, payloadToByteArray(payload));
 
-        insertPayload(payload, (long) subscriptions.size());
+        insertPayload(payload);
         LOGGER.info("Finish SubscriptionDataService.send");
     }
 
-    private void insertPayload(Payload payload, Long subsTotal) {
+    private void insertPayload(Payload payload) {
         LOGGER.info("Start to insert Payload[{}]", payload);
         try {
-            payload.setSubTotal(subsTotal);
-            payload.setCreatedBy(((PushUserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername());
             subscribeMapper.insertPayload(payload);
             LOGGER.info("Finish inserting Payload successfully.");
         } catch (Exception e) {

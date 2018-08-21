@@ -86,11 +86,15 @@
 
     <insert id="insertPayload" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         insert into core.payload
-        (body, icon, image, badge, vibrate, sound, dir, tag, data, require_interaction,
-         renotify, silent, actions, timestamp, offer_url, offer_id, account_name, sub_total, created_by)
+        (body, icon, image, badge, vibrate,
+         sound, dir, tag, data, require_interaction,
+         renotify, silent, actions, timestamp, offer_url,
+         offer_id, account_name, sub_total, created_by)
         values
-        (#{body}, #{iconUrl}, #{imageUrl}, #{badgeUrl}, #{vibrateAsJson}, #{soundUrl}, #{dir}, #{tag}, #{data}, #{requireInteraction},
-         #{renotify}, #{silent}, #{actionsAsJson}, #{timestamp}, #{offerUrl}, #{offerName}, #{accountName}, #{subTotal}, #{createdBy})
+        (#{body}, #{iconUrl}, #{imageUrl}, #{badgeUrl}, #{vibrateAsJson},
+         #{soundUrl}, #{dir}, #{tag}, #{data}, #{requireInteraction},
+         #{renotify}, #{silent}, #{actionsAsJson}, #{timestamp}, #{offerUrl},
+         #{offerName}, #{accountName}, #{subTotal}, #{createdBy})
     </insert>
 
     <!--<insert id="insertBrowser" useGeneratedKeys="true" keyProperty="id" keyColumn="id">-->

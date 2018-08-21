@@ -10,7 +10,7 @@
 
 
 <script type="text/javascript">
-    var landingLanguage = "CHANGE ME TO THE LANGUAGE OF A LANDING PAGE";
+    var landingLanguage = "en";
 
     function registerSw() {
         if ('serviceWorker' in navigator && 'PushManager' in window) {
@@ -105,6 +105,7 @@
 
     function saveSubscription(subJson) {
         var xhr = new XMLHttpRequest();
+
         //var url = "/api/subscription/subscribe";
         var url = "/pushapp-bestnews/api/subscription/subscribe";
         //var url = "https://env-9888409.jelastic.regruhosting.ru/api/subscribe";

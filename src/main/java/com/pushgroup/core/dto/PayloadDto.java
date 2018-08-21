@@ -191,7 +191,7 @@ public class PayloadDto {
         res.setBadgeUrl(this.badgeUrl);
         res.setSoundUrl(this.soundUrl);
         res.setDir(this.dir);
-        res.setTag(this.tag != null? this.tag : this.title + "_" + this.body);
+        res.setTag(this.tag);
         res.setRequireInteraction(this.requireInteraction);
         res.setRenotify(this.renotify);
         res.setSilent(this.silent);

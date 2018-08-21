@@ -114,8 +114,8 @@ public class Sender {
     }
 
     public enum PushServiceType {
-        KEYS_CHROME(new PushServiceBrowserSupport(BrowserName.CHROME, "52", "70", "fcm.googleapis.com")),
-        KEYS_FIREFOX(new PushServiceBrowserSupport(BrowserName.FIREFOX, "44", "65", "updates.push.services.mozilla.com")),
+        KEYS_CHROME(new PushServiceBrowserSupport(BrowserName.CHROME, "52", "700", "fcm.googleapis.com")),
+        KEYS_FIREFOX(new PushServiceBrowserSupport(BrowserName.FIREFOX, "44", "650", "updates.push.services.mozilla.com")),
         GSM_CHROME(new PushServiceBrowserSupport(BrowserName.CHROME, "44", "51", "android.googleapis.com"));
 
         private PushServiceBrowserSupport browserSupport;

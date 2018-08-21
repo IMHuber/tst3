@@ -203,6 +203,34 @@ public class Payload {
         this.actionsAsJson = actionsAsJson;
     }
 
+    @Override
+    public String toString() {
+        return "Payload{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", body='" + body + '\'' +
+                ", data='" + data + '\'' +
+                ", iconUrl='" + iconUrl + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", badgeUrl='" + badgeUrl + '\'' +
+                ", soundUrl='" + soundUrl + '\'' +
+                ", vibrateAsJson='" + vibrateAsJson + '\'' +
+                ", dir='" + dir + '\'' +
+                ", tag='" + tag + '\'' +
+                ", requireInteraction=" + requireInteraction +
+                ", renotify=" + renotify +
+                ", silent=" + silent +
+                ", actions=" + actions +
+                ", actionsAsJson='" + actionsAsJson + '\'' +
+                ", timestamp=" + timestamp +
+                ", offerUrl='" + offerUrl + '\'' +
+                ", offerName='" + offerName + '\'' +
+                ", accountName='" + accountName + '\'' +
+                ", subTotal=" + subTotal +
+                ", createdBy='" + createdBy + '\'' +
+                '}';
+    }
+
     public static class Action {
         private String action;
         private String title;

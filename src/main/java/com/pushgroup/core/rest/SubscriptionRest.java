@@ -2,15 +2,20 @@ package com.pushgroup.core.rest;
 
 
 
+import com.pushgroup.core.domain.Payload;
+import com.pushgroup.core.domain.Subscription;
 import com.pushgroup.core.dto.*;
 import com.pushgroup.core.filtering.Condition;
 import com.pushgroup.core.service.SubscriptionService;
+import com.pushgroup.security.user.PushUserDetails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +28,7 @@ import java.util.Map;
 @RequestMapping("api/subscription")
 public class SubscriptionRest {
     private static final Logger LOGGER = LoggerFactory.getLogger(SubscriptionRest.class);
-    
+
     @Autowired
     private SubscriptionService subscriptionService;
 
@@ -48,9 +53,15 @@ public class SubscriptionRest {
         try {
             if(sendingDataDto.getPayload() == null)
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).contentType(MediaType.TEXT_PLAIN).body("Payload can't be null");
-            
-            SubscriptionDto dto = new SubscriptionDto();
-            subscriptionService.send(dto.fromDtoList(sendingDataDto.getSubscriptions()), sendingDataDto.getPayload().toDomain());
+
+            List<Subscription> subscriptions = new SubscriptionDto().fromDtoList(sendingDataDto.getSubscriptions());
+            if(CollectionUtils.isEmpty(subscriptions))
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).contentType(MediaType.TEXT_PLAIN).body("Subscriptions number can't be 0");
+
+            Payload payload = sendingDataDto.getPayload().toDomain();
+            payload.setSubTotal((long) subscriptions.size());
+            payload.setCreatedBy(((PushUserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername());
+            subscriptionService.send(subscriptions, payload);
             return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch (Exception e) {
             LOGGER.error("post to api/subscription/send failed. Error: ", e);
