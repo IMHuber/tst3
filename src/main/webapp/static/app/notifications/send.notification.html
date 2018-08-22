@@ -44,10 +44,10 @@
                 <div flex="100">
                     <md-input-container style="width: 100%;" class="md-block">
                         <label>Title</label>
-                        <input ng-model="notification.title" md-maxlength="80" md-no-asterisk>
+                        <input ng-model="notification.title" md-maxlength="35" md-no-asterisk>
 
                         <div ng-messages="notification.title.$error">
-                            <div ng-message="md-maxlength">The Title must be less than 80 characters long.</div>
+                            <div ng-message="md-maxlength">The Title must be less than 35 characters long.</div>
                         </div>
                     </md-input-container>
                 </div>
@@ -60,7 +60,7 @@
 
                         <div ng-messages="notification.body.$error">
                             <div ng-message="required">This is required.</div>
-                            <div ng-message="md-maxlength">The Body must be less than 120 characters long.</div>
+                            <div ng-message="md-maxlength">The Body must be less than 80(desktop) or 120(mobile) characters long.</div>
                         </div>
                     </md-input-container>
                 </div>
@@ -100,7 +100,7 @@
                     <md-input-container style="width: 100%;">
                         <label>
                             Actions as JSON. Format:
-                            [{"action":"x", "title":"x", "icon":"x", "url":"x"}, {"action":"x2", "title":"x2", "icon":"x2", "url":"x2"}] <br/>
+                            [{"action":"x", "title":"x", "icon":"x", "url":"http://"}, {"action":"x2", "title":"x2", "icon":"x2", "url":"x2"}] <br/>
                             (icon size ~ 24px x 24px or 128px x 128px)
                         </label>
                         <textarea ng-model="notification.actions" rows="3" max-rows="4"></textarea>
