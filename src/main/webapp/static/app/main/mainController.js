@@ -9,7 +9,6 @@
     function mainController($scope, mainDataService, $mdDialog) {
         angular.extend($scope, {
             getSubscriptions : getSubscriptions,
-            send : send,
             compareStr : compareStr,
             addSelectedValueToArray : addSelectedValueToArray,
             showSendNotificationDialog: showSendNotificationDialog
@@ -33,13 +32,6 @@
                 });
         }
 
-        function send() {
-            mainDataService.send($scope.filters)
-                .then(function (response) {
-                    console.log(response);
-                });
-        }
-
         function compareStr(s1, s2) {
             return angular.equals(s1, s2);
         }
@@ -53,7 +45,8 @@
             var url = 'resources/app/notifications/send.notification.html';
             $mdDialog.show({
                 locals: {
-                    subscriptions: $scope.subscriptionRes.subscriptions
+                    subscriptions: $scope.subscriptionRes.subscriptions,
+                    conditions: $scope.filters
                 },
                 clickOutsideToClose: true,
                 templateUrl: url,

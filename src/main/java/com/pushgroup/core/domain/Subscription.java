@@ -26,6 +26,8 @@ public class Subscription {
     private String cityName;
     private String regionName;
     private Long ip2locationId;
+    private String osName;
+    private String osVersion;
 
     public Subscription() {
     }
@@ -198,6 +200,22 @@ public class Subscription {
         this.ip2locationId = ip2locationId;
     }
 
+    public String getOsName() {
+        return osName;
+    }
+
+    public void setOsName(String osName) {
+        this.osName = osName;
+    }
+
+    public String getOsVersion() {
+        return osVersion;
+    }
+
+    public void setOsVersion(String osVersion) {
+        this.osVersion = osVersion;
+    }
+
     @Override
     public String toString() {
         return "Subscription{" +
@@ -222,32 +240,8 @@ public class Subscription {
                 ", cityName='" + cityName + '\'' +
                 ", regionName='" + regionName + '\'' +
                 ", ip2locationId=" + ip2locationId +
+                ", osName=" + osName +
+                ", osVersion=" + osVersion +
                 '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Subscription that = (Subscription) o;
-        return Objects.equals(id, that.id) &&
-                Objects.equals(endpoint, that.endpoint) &&
-                Objects.equals(expirationTime, that.expirationTime) &&
-                Objects.equals(p256dh, that.p256dh) &&
-                Objects.equals(auth, that.auth) &&
-                Objects.equals(sourceUrl, that.sourceUrl) &&
-                Objects.equals(categoryNames, that.categoryNames) &&
-                Objects.equals(landingLanguage, that.landingLanguage) &&
-                Objects.equals(browserName, that.browserName) &&
-                Objects.equals(browserMajorVersion, that.browserMajorVersion) &&
-                Objects.equals(browserFullVersion, that.browserFullVersion) &&
-                Objects.equals(browserLanguage, that.browserLanguage) &&
-                Objects.equals(browserId, that.browserId) &&
-                Objects.equals(createdTs, that.createdTs);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, endpoint, expirationTime, p256dh, auth, sourceUrl, categoryNames, landingLanguage, browserName, browserMajorVersion, browserFullVersion, browserLanguage, browserId, createdTs);
     }
 }

@@ -50,32 +50,39 @@ CREATE TABLE IF NOT EXISTS core.subscription (
   brw_full_version  character varying(64),
   brw_language      character varying(128),
   landing_language  character varying(64),
+  os_name           character varying(64),
+  os_version        character varying(64),
   created_ts        timestamp default now()
 );
 
+-- ALTER TABLE core.subscription
+--   ADD COLUMN IF NOT EXISTS os_name character varying(64);
+-- ALTER TABLE core.subscription
+--   ADD COLUMN IF NOT EXISTS os_version character varying(64);
+
 CREATE TABLE IF NOT EXISTS core.payload (
-  id                 serial primary key,
+  id                  serial primary key,
   title               text,
-  body               text,
-  icon               text,
-  image              text,
-  badge              text,
-  vibrate            text,
-  sound              text,
-  dir                character varying(8),
-  tag                character varying(64),
-  data               text,
+  body                text,
+  icon                text,
+  image               text,
+  badge               text,
+  vibrate             text,
+  sound               text,
+  dir                 character varying(8),
+  tag                 character varying(64),
+  data                text,
   require_interaction boolean,
-  renotify           boolean,
-  silent             boolean,
-  actions            text,
-  timestamp          timestamp,
-  offer_url         text,
-  offer_id           text,
-  account_name         text,
-  sub_total          bigint,
-  created_by         character varying(128),
-  created_ts         timestamp default now()
+  renotify            boolean,
+  silent              boolean,
+  actions             text,
+  timestamp           timestamp,
+  offer_url           text,
+  offer_id            text,
+  account_name        text,
+  sub_total           bigint,
+  created_by          character varying(128),
+  created_ts          timestamp default now()
 );
 
 CREATE TABLE IF NOT EXISTS core.subscription_category_ref (

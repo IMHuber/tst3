@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.Map;
 
 
 @RestController
@@ -37,7 +36,6 @@ public class SubscriptionRest {
     @RequestMapping(path = "/subscribe", method = RequestMethod.POST)
     public @ResponseBody ResponseEntity subscribe(@RequestBody SubscriptionDto subscriptionDto, HttpServletRequest request) {
         try {
-            LOGGER.info("POST to api/subscription/subscribe");
             setClientIp(subscriptionDto, request);
             subscriptionService.subscribe(subscriptionDto.toDomain());
             return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -54,15 +52,18 @@ public class SubscriptionRest {
             if(sendingDataDto.getPayload() == null)
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).contentType(MediaType.TEXT_PLAIN).body("Payload can't be null");
 
-            List<Subscription> subscriptions = new SubscriptionDto().fromDtoList(sendingDataDto.getSubscriptions());
+            List<Subscription> subscriptions = subscriptionService.getSubscriptions(sendingDataDto.getConditions());
             if(CollectionUtils.isEmpty(subscriptions))
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).contentType(MediaType.TEXT_PLAIN).body("Subscriptions number can't be 0");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).contentType(MediaType.TEXT_PLAIN).body("Can't find any subscriptions for given conditions");
 
             Payload payload = sendingDataDto.getPayload().toDomain();
             payload.setSubTotal((long) subscriptions.size());
             payload.setCreatedBy(((PushUserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername());
-            subscriptionService.send(subscriptions, payload);
-            return ResponseEntity.status(HttpStatus.CREATED).build();
+
+            SendingResultDto res = new SendingResultDto();
+            res.setStatuses(subscriptionService.send(subscriptions, payload));
+
+            return ResponseEntity.ok(res);
         } catch (Exception e) {
             LOGGER.error("post to api/subscription/send failed. Error: ", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).contentType(MediaType.TEXT_PLAIN).body("");
@@ -82,7 +83,7 @@ public class SubscriptionRest {
 
     @RequestMapping(method= RequestMethod.POST)
     public @ResponseBody ResponseEntity<Object> getSubscriptions(@RequestBody List<Condition> conditions,
-                                                                 @RequestParam(value = "limit", defaultValue = "20")int limit,
+                                                                 @RequestParam(value = "limit", defaultValue = "10")int limit,
                                                                  @RequestParam(value = "offset", defaultValue = "0") int offset) {
         try {
             LOGGER.info("GET to api/subscription");

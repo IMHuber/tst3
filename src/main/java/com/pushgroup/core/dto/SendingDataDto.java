@@ -7,7 +7,6 @@ import java.util.List;
 public class SendingDataDto {
     private List<Condition> conditions;
     private PayloadDto payload;
-    private List<SubscriptionDto> subscriptions;
 
     public SendingDataDto() {
     }
@@ -26,13 +25,5 @@ public class SendingDataDto {
 
     public void setPayload(PayloadDto payload) {
         this.payload = payload;
-    }
-
-    public List<SubscriptionDto> getSubscriptions() {
-        return subscriptions;
-    }
-
-    public void setSubscriptions(List<SubscriptionDto> subscriptions) {
-        this.subscriptions = subscriptions;
     }
 }

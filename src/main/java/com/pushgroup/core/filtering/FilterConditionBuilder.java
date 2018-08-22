@@ -36,15 +36,30 @@ public class FilterConditionBuilder {
         }
         Condition browserCondition = new Condition("sub.brw_name", "Browser", browserNames,
                 Operator.EQUAL.getSign(), browserVersions, null, ViewElement.SELECT.name());
+
+        Condition browserLangCondition = new Condition("sub.brw_language", "Browser Language",
+                subscribeMapper.getAllBrowserLanguages(), Operator.EQUAL.getSign(), null, null, ViewElement.SELECT.name());
+
         Condition countryNameCondition = new Condition("sub.country_name", "Country Name", subscribeMapper.getAllCountryNames(),
-                Operator.EQUAL.getSign(), browserVersions, null, ViewElement.SELECT.name());
+                Operator.EQUAL.getSign(), null, null, ViewElement.SELECT.name());
         Condition cityNameCondition = new Condition("sub.city_name", "City Name", subscribeMapper.getAllCityNames(),
-                Operator.EQUAL.getSign(), browserVersions, null, ViewElement.SELECT.name());
+                Operator.EQUAL.getSign(), null, null, ViewElement.SELECT.name());
+
+        List<String> osNames = subscribeMapper.getAllOsNames();
+        List<Condition> osVersions = new ArrayList<>();
+        for(String osName : osNames) {
+            osVersions.add(new Condition("sub.os_version", osName + " versions",
+                    subscribeMapper.getAllVersionsByOsName(osName), Operator.EQUAL.getSign(), null, osName, ViewElement.SELECT.name()));
+        }
+        Condition osCondition = new Condition("sub.os_name", "Os", osNames,
+                Operator.EQUAL.getSign(), osVersions, null, ViewElement.SELECT.name());
 
         res.add(idCondition);
+        res.add(osCondition);
         res.add(countryNameCondition);
         res.add(cityNameCondition);
         res.add(browserCondition);
+        res.add(browserLangCondition);
         res.add(categoryCondition);
         res.add(landingLangCondition);
         return res;

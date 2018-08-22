@@ -19,6 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.security.Security;
+import java.util.HashMap;
 import java.util.List;
 
 import static com.pushgroup.core.service.Sender.PushServiceType.KEYS_CHROME;
@@ -45,12 +46,13 @@ public class Sender {
 
 
 
-    public void send(List<Subscription> subscriptions, byte[] payload) {
+    public HashMap<Integer, Integer> send(List<Subscription> subscriptions, byte[] payload) {
         LOGGER.info("Start to prepare sending notification");
         LOGGER.info("Number of subscriptions to send is " + subscriptions.size());
 
         PushService pushService = null;
         PushServiceType currentPushServiceType = null;
+        HashMap<Integer, Integer> sendingRes = new HashMap<>();
         
         for(Subscription subscription : subscriptions) {
             PushServiceType subPushServiceType = definePushServiceTypeBySubscription(subscription);
@@ -66,21 +68,25 @@ public class Sender {
                 HttpResponse httpResponse = pushService.send(notification);
                 int status = httpResponse.getStatusLine().getStatusCode();
 
+                sendingRes.put(status, sendingRes.get(status) != null? sendingRes.get(status) + 1 : 1);
                 LOGGER.info("Finish to send to Subscription[{}]. Status code = {}", subscription.getId(), status);
 
                 if(status == HttpStatus.NOT_FOUND.value() || status == HttpStatus.GONE.value()) {
-                    LOGGER.info("Status code for Subscription[{}] is {}. Start to delete subscription", subscription.getId(), status);
+                    LOGGER.error("Status code for Subscription[{}] is {}. Start to delete subscription", subscription, status);
                     subscribeMapper.deleteSubCatRef(subscription.getId());
                     subscribeMapper.deleteSubscription(subscription.getId());
                     LOGGER.info("Delete Subscription[{}] successfully.", subscription.getId());
                 }
                 //System.out.println(IOUtils.toString(httpResponse.getEntity().getContent(), StandardCharsets.UTF_8));
             } catch (Exception e) {
-                LOGGER.info("Failed to send to Subscription[{}]. Error: {}", subscription.getId(), e);
+                sendingRes.put(HttpStatus.INTERNAL_SERVER_ERROR.value(), sendingRes.get(HttpStatus.INTERNAL_SERVER_ERROR.value()) != null?
+                        sendingRes.get(HttpStatus.INTERNAL_SERVER_ERROR.value()) + 1 : 1);
+                LOGGER.info("Failed to send to Subscription[{}]. Error: {}", subscription, e);
             }
         }
 
         LOGGER.info("Finish to send notifications successfully");
+        return sendingRes;
     }
 
     private PushService initPushService(PushServiceType pushServiceType) {

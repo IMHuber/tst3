@@ -19,8 +19,9 @@ public interface SubscriptionMapper {
     void insertPayload(Payload payload);
 
     List<Browser> getBrowsersByNameAndMajorVersion(@Param("name") String name, @Param("majorVersion") String majorVersion);
-    Set<Subscription> getAllSubscriptions();
-    Set<Subscription> getSubscriptionsByCondition(@Param("condition") String condition);
+    List<Subscription> getAllSubscriptions();
+    List<Subscription> getSubscriptionsByCondition(@Param("condition") String condition);
+    List<Subscription> getSubscriptionsByConditionAndLimitAndOffset(@Param("condition") String condition, @Param("limit") int limit, @Param("offset") int offset);
     Long getCountByCondition(@Param("condition") String condition);
     List<Category> getAllCategories();
     Category getCategoryByName(@Param("name") String name);
@@ -28,6 +29,9 @@ public interface SubscriptionMapper {
     List<String> getAllLandingLanguages();
     List<String> getAllBrowsersNames();
     List<String> getAllMajorVersionsByBrowserName(@Param("name") String name);
+    List<String> getAllBrowserLanguages();
+    List<String> getAllOsNames();
+    List<String> getAllVersionsByOsName(@Param("name") String name);
     List<String> getAllCountyCodes();
     List<String> getAllCountryNames();
     List<String> getAllCityNames();

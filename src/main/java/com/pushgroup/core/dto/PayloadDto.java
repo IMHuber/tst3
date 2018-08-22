@@ -212,7 +212,7 @@ public class PayloadDto {
                     jObj.addProperty("title", dto.getTitle());
                     jObj.addProperty("icon", dto.getIcon());
                     jArr.add(jObj);
-                    actions.add(new Payload.Action(dto.getAction(), dto.getTitle(), dto.getIcon()));
+                    actions.add(new Payload.Action(dto.getAction(), dto.getTitle(), dto.getIcon(), dto.getUrl()));
                 }
                 res.setActions(actions);
                 res.setActionsAsJson(jArr.toString());
@@ -244,14 +244,16 @@ public class PayloadDto {
         private String action;
         private String title;
         private String icon;
+        private String url;
 
         public ActionDto() {
         }
 
-        public ActionDto(String action, String title, String icon) {
+        public ActionDto(String action, String title, String icon, String url) {
             this.action = action;
             this.title = title;
             this.icon = icon;
+            this.url = url;
         }
 
 
@@ -277,6 +279,14 @@ public class PayloadDto {
 
         public void setIcon(String icon) {
             this.icon = icon;
+        }
+
+        public String getUrl() {
+            return url;
+        }
+
+        public void setUrl(String url) {
+            this.url = url;
         }
     }
 }

@@ -7,7 +7,6 @@ import com.pushgroup.core.domain.Subscription;
 import java.sql.Timestamp;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import static java.util.Objects.isNull;
@@ -23,6 +22,7 @@ public class SubscriptionDto {
     private BrowserInfoDto browserInfo;
     private String landingLanguage;
     private GeoInfoDto geoInfo;
+    private OsInfoDto osInfo;
 
     public SubscriptionDto() {
     }
@@ -107,6 +107,14 @@ public class SubscriptionDto {
         this.geoInfo = geoInfo;
     }
 
+    public OsInfoDto getOsInfo() {
+        return osInfo;
+    }
+
+    public void setOsInfo(OsInfoDto osInfo) {
+        this.osInfo = osInfo;
+    }
+
     public Subscription toDomain() {
         Subscription res = new Subscription();
         res.setId(this.id);
@@ -126,6 +134,8 @@ public class SubscriptionDto {
         res.setCountryName(this.geoInfo != null? this.geoInfo.countryName : null);
         res.setCityName(this.geoInfo != null? this.geoInfo.cityName : null);
         res.setRegionName(this.geoInfo != null? this.geoInfo.regionName : null);
+        res.setOsName(this.osInfo != null? this.osInfo.name : null);
+        res.setOsVersion(this.osInfo != null? this.osInfo.version : null);
         return res;
     }
 
@@ -146,10 +156,11 @@ public class SubscriptionDto {
         dto.setKeys(new KeyDto(sub.getP256dh(), sub.getAuth()));
         dto.setBrowserInfo(new BrowserInfoDto(sub.getBrowserName(), null, sub.getBrowserMajorVersion(), null, null, sub.getBrowserLanguage()));
         dto.setGeoInfo(new GeoInfoDto(sub.getIp(), sub.getCountryCode(), sub.getCountryName(), sub.getCityName(), sub.getRegionName()));
+        dto.setOsInfo(new OsInfoDto(sub.getOsName(), sub.getOsVersion()));
         return dto;
     }
 
-    public static List<SubscriptionDto> fromDomainList(Set<? extends Subscription> subscriptions) {
+    public static List<SubscriptionDto> fromDomainList(List<? extends Subscription> subscriptions) {
         if(isNull(subscriptions)){
             return Collections.emptyList();
         }
@@ -315,6 +326,35 @@ public class SubscriptionDto {
 
         public void setRegionName(String regionName) {
             this.regionName = regionName;
+        }
+    }
+
+    public static class OsInfoDto {
+        private String name;
+        private String version;
+
+        public OsInfoDto() {
+        }
+
+        public OsInfoDto(String name, String version) {
+            this.name = name;
+            this.version = version;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getVersion() {
+            return version;
+        }
+
+        public void setVersion(String version) {
+            this.version = version;
         }
     }
 }

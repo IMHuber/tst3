@@ -52,7 +52,7 @@
                      allowed-origins="*"
                      allowed-headers="
                      Content-Type, content-type, x-requested-with, Access-Control-Allow-Origin,
-                     Access-Control-Allow-Headers, x-auth-token, x-app-id, Origin,
+                     Access-Control-Allow-Headers, x-auth-token, x-app-id, Origin, Accept-Charset,
                      Accept, X-Requested-With, Access-Control-Request-Method, Access-Control-Request-Headers"
                      allowed-methods="*"
                      exposed-headers="x-auth-token, Access-Control-Allow-Origin"/>

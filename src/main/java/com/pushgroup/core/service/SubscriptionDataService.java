@@ -83,12 +83,13 @@ public class SubscriptionDataService implements SubscriptionService {
     }
 
     @Override
-    public void send(List<Subscription> subscriptions, Payload payload) {
+    public HashMap<Integer, Integer> send(List<Subscription> subscriptions, Payload payload) {
         LOGGER.info("Start SubscriptionDataService.send for Payload[{}]", payload);
-        sender.send(subscriptions, payloadToByteArray(payload));
+        HashMap<Integer, Integer> sendingRes = sender.send(subscriptions, payloadToByteArray(payload));
 
         insertPayload(payload);
         LOGGER.info("Finish SubscriptionDataService.send");
+        return sendingRes;
     }
 
     private void insertPayload(Payload payload) {
@@ -107,10 +108,17 @@ public class SubscriptionDataService implements SubscriptionService {
     }
 
     @Override
-    public Set<Subscription> getSubscriptions(List<Condition> conditions, int limit, int offset) {
-        LOGGER.info("Start to get subscription");
+    public List<Subscription> getSubscriptions(List<Condition> conditions) {
+        LOGGER.info("Start to get getSubscriptions");
         String condition = Helper.buildWhereClause(conditions);
         return subscribeMapper.getSubscriptionsByCondition(condition);
+    }
+
+    @Override
+    public List<Subscription> getSubscriptions(List<Condition> conditions, int limit, int offset) {
+        LOGGER.info("Start to get getSubscriptionsByConditionAndLimitAndOffset");
+        String condition = Helper.buildWhereClause(conditions);
+        return subscribeMapper.getSubscriptionsByConditionAndLimitAndOffset(condition, limit, offset);
     }
 
     @Override
@@ -121,9 +129,6 @@ public class SubscriptionDataService implements SubscriptionService {
     }
 
     private byte[] payloadToByteArray(Payload payload) {
-
-        LOGGER.info("111111111111--body:--111111111111 = " + payload.getBody());
-
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("title", payload.getTitle());
         jsonObject.addProperty("body", payload.getBody());
@@ -159,6 +164,17 @@ public class SubscriptionDataService implements SubscriptionService {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("offerUrl", payload.getOfferUrl());
         jsonObject.addProperty("formData", payload.getData());
+
+        if(!CollectionUtils.isEmpty(payload.getActions())) {
+            JsonArray actUrls = new JsonArray();
+            for(Payload.Action action : payload.getActions()) {
+                JsonObject actUrl = new JsonObject();
+                actUrl.addProperty("action", action.getAction());
+                actUrl.addProperty("url", action.getUrl());
+                actUrls.add(actUrl);
+            }
+            jsonObject.add("actionsUrls", actUrls);
+        }
         return jsonObject;
     }
 

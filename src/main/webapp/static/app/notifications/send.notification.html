@@ -42,34 +42,31 @@
             </div>
             <div layout="row" class="md-padding" style="margin-top: -8%">
                 <div flex="100">
-                    <md-input-container style="width: 100%;">
+                    <md-input-container style="width: 100%;" class="md-block">
                         <label>Title</label>
-                        <input ng-model="notification.title">
+                        <input ng-model="notification.title" md-maxlength="80" md-no-asterisk>
+
+                        <div ng-messages="notification.title.$error">
+                            <div ng-message="md-maxlength">The Title must be less than 80 characters long.</div>
+                        </div>
                     </md-input-container>
                 </div>
             </div>
             <div layout="row" class="md-padding" style="margin-top: -8%">
-                <div flex="50">
+                <div flex="100">
                     <md-input-container style="width: 100%;">
                         <label>Body</label>
-                        <textarea ng-model="notification.body" rows="3" max-rows="4" required></textarea>
-                    </md-input-container>
-                </div>
-                <div flex="50">
-                    <md-input-container style="width: 100%;">
-                        <label>Data</label>
-                        <textarea ng-model="notification.data" rows="3" max-rows="4"></textarea>
+                        <textarea ng-model="notification.body" rows="3" max-rows="4" required md-maxlength="120"></textarea>
+
+                        <div ng-messages="notification.body.$error">
+                            <div ng-message="required">This is required.</div>
+                            <div ng-message="md-maxlength">The Body must be less than 120 characters long.</div>
+                        </div>
                     </md-input-container>
                 </div>
             </div>
             <div layout="row" class="md-padding" style="margin-top: -8%">
-                <div flex="50">
-                    <md-input-container style="width: 100%;">
-                        <label>Icon url</label>
-                        <input ng-model="notification.iconUrl">
-                    </md-input-container>
-                </div>
-                <div flex="50">
+                <div flex="100">
                     <md-input-container style="width: 100%;">
                         <label>Image url</label>
                         <input ng-model="notification.imageUrl">
@@ -77,27 +74,44 @@
                 </div>
             </div>
             <div layout="row" class="md-padding" style="margin-top: -8%">
-                <div flex="50">
+                <div flex="100">
                     <md-input-container style="width: 100%;">
-                        <label>Badge url</label>
-                        <input ng-model="notification.badgeUrl">
-                    </md-input-container>
-                </div>
-                <div flex="50">
-                    <md-input-container style="width: 100%;">
-                        <label>Sound url</label>
-                        <input ng-model="notification.soundUrl">
+                        <label>Icon url <br/> (jpg/png) - (192 x 192 px)</label>
+                        <input ng-model="notification.iconUrl">
                     </md-input-container>
                 </div>
             </div>
             <div layout="row" class="md-padding" style="margin-top: -8%">
                 <div flex="100">
                     <md-input-container style="width: 100%;">
+                        <label>Badge url <br/> (jpg/png ) - (360 x 240 px; 492х328; 720 x 480 px (for Retina displays))</label>
+                        <input ng-model="notification.badgeUrl">
+                    </md-input-container>
+                </div>
+                <!--<div flex="50">-->
+                    <!--<md-input-container style="width: 100%;">-->
+                        <!--<label>Sound url</label>-->
+                        <!--<input ng-model="notification.soundUrl">-->
+                    <!--</md-input-container>-->
+                <!--</div>-->
+            </div>
+            <div layout="row" class="md-padding" style="margin-top: -8%">
+                <div flex="100">
+                    <md-input-container style="width: 100%;">
                         <label>
                             Actions as JSON. Format:
-                            [{"action":"x", "title":"x", "icon":"x"}]
+                            [{"action":"x", "title":"x", "icon":"x", "url":"x"}, {"action":"x2", "title":"x2", "icon":"x2", "url":"x2"}] <br/>
+                            (icon size ~ 24px x 24px or 128px x 128px)
                         </label>
                         <textarea ng-model="notification.actions" rows="3" max-rows="4"></textarea>
+                    </md-input-container>
+                </div>
+            </div>
+            <div layout="row" class="md-padding" style="margin-top: -8%">
+                <div flex="100">
+                    <md-input-container style="width: 100%;">
+                        <label>Data</label>
+                        <textarea ng-model="notification.data" rows="3" max-rows="4"></textarea>
                     </md-input-container>
                 </div>
             </div>

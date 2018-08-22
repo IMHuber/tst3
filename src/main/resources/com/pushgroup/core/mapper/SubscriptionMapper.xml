@@ -16,11 +16,13 @@
         <result property="browserMajorVersion" column="brw_major_version"></result>
         <result property="browserFullVersion" column="brw_full_version"></result>
         <result property="browserLanguage" column="brw_language"></result>
-        <result property="browserLanguage" column="ip"></result>
+        <result property="ip" column="ip"></result>
         <result property="countryCode" column="country_code"></result>
         <result property="countryName" column="country_name"></result>
         <result property="cityName" column="city_name"></result>
         <result property="regionName" column="region_name"></result>
+        <result property="osName" column="os_name"></result>
+        <result property="osVersion" column="os_version"></result>
     </resultMap>
 
     <resultMap id="category" type="com.pushgroup.core.domain.Category">
@@ -53,11 +55,13 @@
         insert into core.subscription
         (endpoint, expiration_time, p256dh, auth, source_url, landing_language,
          brw_name, brw_major_version, brw_full_version, brw_language, ip2location_id,
-         ip, country_code, country_name, city_name, region_name)
+         ip, country_code, country_name, city_name, region_name,
+         os_name, os_version)
         values
         (#{endpoint}, #{expirationTime}, #{p256dh}, #{auth}, #{sourceUrl}, #{landingLanguage},
          #{browserName}, #{browserMajorVersion}, #{browserFullVersion}, #{browserLanguage}, #{ip2locationId},
-         #{ip}, #{countryCode}, #{countryName}, #{cityName}, #{regionName})
+         #{ip}, #{countryCode}, #{countryName}, #{cityName}, #{regionName},
+         #{osName}, #{osVersion})
     </insert>
 
     <delete id="deleteSubscription">
@@ -118,7 +122,21 @@
                 ${condition}
             </where>
         </if>
-        order by id asc
+        order by id desc
+    </select>
+
+    <select id="getSubscriptionsByConditionAndLimitAndOffset" resultMap="subscription">
+        select distinct(sub.*)
+        from core.subscription sub
+        left join core.subscription_category_ref scr on scr.subscription_id = sub.id
+        left join core.category cat on cat.id = scr.category_id
+        <if test="condition != null and condition != '' ">
+            <where>
+                ${condition}
+            </where>
+        </if>
+        order by id desc
+        OFFSET #{offset} LIMIT #{limit}
     </select>
 
     <select id="getCountByCondition" resultType="Long">
@@ -162,6 +180,24 @@
         select distinct(brw_major_version)
         from core.subscription
         where lower(brw_name) = lower(#{name})
+    </select>
+
+    <select id="getAllBrowserLanguages" resultType="string">
+        select distinct(brw_language)
+        from core.subscription
+        where brw_language is not null
+    </select>
+
+    <select id="getAllOsNames" resultType="string">
+        select distinct(os_name)
+        from core.subscription
+        where os_name is not null
+    </select>
+
+    <select id="getAllVersionsByOsName" resultType="string">
+        select distinct(os_version)
+        from core.subscription
+        where lower(os_name) = lower(#{name})
     </select>
 
     <select id="getIpLocationByIp" resultMap="ipLocation">

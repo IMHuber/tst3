@@ -1,10 +1,7 @@
 
 
 self.addEventListener('push', function(event) {
-    console.log('111');
     console.log('[Service Worker] Push had this data.text:' + event.data.text());
-
-    console.log('body: ' + response.body);
 
     var response = JSON.parse(event.data.text());
 
@@ -37,6 +34,16 @@ self.addEventListener('notificationclick', function(event) {
     var data = event.notification.data;
 
     event.notification.close();
-    event.waitUntil(clients.openWindow(data.offerUrl)
-    );
+
+    if (!event.action) {
+        event.waitUntil(clients.openWindow(data.offerUrl));
+    } else {
+        var action = data.actionsUrls.find(function(node) {
+            return node.action === event.action;
+        });
+        console.log('action.url:' + action.url);
+        event.waitUntil(clients.openWindow(action.url));
+    }
+
+    //event.waitUntil(clients.openWindow(data.offerUrl));
 });

@@ -13,11 +13,11 @@
         };
 
 
-        function send(subscriptions, notification) {
+        function send(conditions, notification) {
             return $http({
                 url: $rootScope.apiBaseUrl + "/api/subscription/send",
                 method: "POST",
-                data: {subscriptions: subscriptions, payload: notification}
+                data: {conditions : conditions, payload: notification}
             });
         }
     }

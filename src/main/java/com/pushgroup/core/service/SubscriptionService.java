@@ -6,13 +6,15 @@ import com.pushgroup.core.domain.Subscription;
 import com.pushgroup.core.filtering.Condition;
 
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
 public interface SubscriptionService {
     void subscribe(Subscription subscription);
-    void send(List<Subscription> subscriptions, Payload payload);
+    HashMap<Integer, Integer> send(List<Subscription> subscriptions, Payload payload);
     List<Condition> getFilterConditions();
-    Set<Subscription> getSubscriptions(List<Condition> conditions, int limit, int offset);
+    List<Subscription> getSubscriptions(List<Condition> conditions);
+    List<Subscription> getSubscriptions(List<Condition> conditions, int limit, int offset);
     Long getCount(List<Condition> conditions);
 }

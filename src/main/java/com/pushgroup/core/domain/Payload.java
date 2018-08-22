@@ -235,14 +235,16 @@ public class Payload {
         private String action;
         private String title;
         private String iconUrl;
+        private String url;
 
         public Action() {
         }
 
-        public Action(String action, String title, String iconUrl) {
+        public Action(String action, String title, String iconUrl, String url) {
             this.action = action;
             this.title = title;
             this.iconUrl = iconUrl;
+            this.url = url;
         }
 
         public String getAction() {
@@ -267,6 +269,14 @@ public class Payload {
 
         public void setIconUrl(String iconUrl) {
             this.iconUrl = iconUrl;
+        }
+
+        public String getUrl() {
+            return url;
+        }
+
+        public void setUrl(String url) {
+            this.url = url;
         }
     }
 }
