@@ -204,7 +204,7 @@
                     osVersion = osVersion[1] + '.' + osVersion[2] + '.' + (osVersion[3] | 0);
                     break;
             }
-
+            osVersion = osVersion.replace(/_/g, ".");
             return {name:os, version:osVersion};
         }catch (e) {
             console.log(e);
