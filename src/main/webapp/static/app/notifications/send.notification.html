@@ -52,11 +52,12 @@
                     </md-input-container>
                 </div>
             </div>
-            <div layout="row" class="md-padding" style="margin-top: -8%">
+            <div layout="row" class="md-padding" style="margin-top: 0">
+                
                 <div flex="100">
                     <md-input-container style="width: 100%;">
-                        <label>Body</label>
-                        <textarea ng-model="notification.body" rows="3" max-rows="4" required md-maxlength="120"></textarea>
+                        <label>Body <br/> 35(os_desktop)/60(win_desktop)/210(mobile) characters without image <br/> 35(os_desktop)/15-60(win_desktop)/35(mobile) characters with image</label>
+                        <textarea ng-model="notification.body" rows="3" max-rows="4" required md-maxlength="210"></textarea>
 
                         <div ng-messages="notification.body.$error">
                             <div ng-message="required">This is required.</div>

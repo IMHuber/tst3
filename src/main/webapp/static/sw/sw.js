@@ -42,7 +42,11 @@ self.addEventListener('notificationclick', function(event) {
             return node.action === event.action;
         });
         console.log('action.url:' + action.url);
-        event.waitUntil(clients.openWindow(action.url));
+        if(action.url != null)
+            event.waitUntil(clients.openWindow(action.url));
+        else
+            event.waitUntil(clients.openWindow(data.offerUrl));
+
     }
 
     //event.waitUntil(clients.openWindow(data.offerUrl));

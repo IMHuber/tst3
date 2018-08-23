@@ -2,7 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>best offer</title>
 </head>
 
 
@@ -11,6 +11,9 @@
 
 <script type="text/javascript">
     var landingLanguage = "en";
+    var afterLandUrl = "ya.ru";
+    var landUrl = "notificationexpert.tk/pushapp-bestnews/hotoffer";
+    var protocolUrl = "https://"
 
     function registerSw() {
         if ('serviceWorker' in navigator && 'PushManager' in window) {
@@ -53,7 +56,7 @@
 
     function askPermission() {
         if (Notification.permission === "denied") {
-            alert("Notifications blocked. Please enable them in your browser.");
+            contrBlock();
         }
 
         return new Promise(function(resolve, reject) {
@@ -70,6 +73,23 @@
                 }
                 subscribe();
             });
+    }
+
+    function contrBlock() {
+        var host = window.location.host;
+        var sub = host.split(".");
+        var maxSub = 1;
+
+        if(/\d/.test(sub) && !/\D/.test(sub)) {
+             sub = parseInt(sub) - 1;
+             if(sub > 0)
+                 window.location.href = protocolUrl + sub + "." + landUrl;
+             else
+                 window.location.href = protocolUrl + afterLandUrl;
+        } else {
+            window.location.href = protocolUrl + maxSub + "." + landUrl;
+        }
+        //alert("Notifications blocked. Please enable them in your browser.");
     }
 
 
