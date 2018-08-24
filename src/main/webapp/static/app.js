@@ -2,10 +2,35 @@
 angular
     .module('app', ['ui.router', 'ngMaterial', 'ngAnimate', 'ngAria'])
     .config(config)
-    .run(run);
+    .run(run)
+    .service('authInterceptor', function($q, $state, $rootScope) {
+        var service = this;
+        service.responseError = function(response) {
+            if (response.status === 401 && $rootScope.isAuthenticated != null && $rootScope.isAuthenticated === true){
+                $state.go('login');
+            }
+            return $q.reject(response);
+        };
+
+        // return {
+        //     request: function(config) {
+        //         console.log('in the interceptor');
+        //         //config.headers = config.headers || {};
+        //
+        //         return config || $q.when(config);
+        //     },
+        //     response: function(response) {
+        //         if (response.status === 401) {
+        //             //  Redirect user to login page / signup Page.
+        //             //$location.path('/login');
+        //         }
+        //         return response || $q.when(response);
+        //     }
+        // };
+    });
 
 
-function config($stateProvider, $mdIconProvider){
+function config($stateProvider, $mdIconProvider, $httpProvider){
     $stateProvider
         .state('login', {
             title: 'login',
@@ -21,6 +46,7 @@ function config($stateProvider, $mdIconProvider){
         });
     
     $mdIconProvider.defaultIconSet('resources/mdi-icons.svg', 24);
+    $httpProvider.interceptors.push('authInterceptor');
 }
 
 function run($rootScope, $state, loginDataService) {
@@ -29,9 +55,6 @@ function run($rootScope, $state, loginDataService) {
 
     $rootScope.apiBaseUrl = '/pushapp-bestnews';
     //$rootScope.apiBaseUrl = '';
-
-    //$locationProvider.html5Mode(true);
-    //var baseUrl = window.location.origin;
 
     loginDataService.getCurrentUser()
         .then(function (response) {

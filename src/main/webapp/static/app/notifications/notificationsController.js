@@ -28,6 +28,8 @@
                     $rootScope.sendingres = response.data;
                 })
                 .catch(function (response) {
+                    if(response != null && response.status === 401)
+                        $mdDialog.hide();
                     $scope.serverError = response.status + ": " + (response.data ? response.data : response.statusText);
                 });
         }

