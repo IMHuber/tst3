@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pushgroup.core.mapper.PayloadMapper">
+    
+
+    <resultMap id="payload" type="com.pushgroup.core.domain.Payload">
+        <id property="id" column="id"></id>
+        <result property="title" column="title"></result>
+        <result property="body" column="body"></result>
+        <result property="offerUrl" column="offer_url"></result>
+        <result property="createdTs" column="created_ts"></result>
+        <result property="pushedTotal" column="pushed_total"></result>
+        <result property="viewsTotal" column="views_total"></result>
+        <result property="clicksTotal" column="clicks_total"></result>
+    </resultMap>
+    
+
+    <insert id="insertPayload" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        insert into core.payload
+        (body, icon, image, badge, vibrate,
+         sound, dir, tag, data, require_interaction,
+         renotify, silent, actions, timestamp, offer_url,
+         offer_id, account_name, sub_total, created_by, title,
+         hash, api_key)
+        values
+        (#{body}, #{iconUrl}, #{imageUrl}, #{badgeUrl}, #{vibrateAsJson},
+         #{soundUrl}, #{dir}, #{tag}, #{data}, #{requireInteraction},
+         #{renotify}, #{silent}, #{actionsAsJson}, #{timestamp}, #{offerUrl},
+         #{offerName}, #{accountName}, #{subTotal}, #{createdBy}, #{title},
+         #{hash}, #{apiKey})
+    </insert>
+
+    <update id="updatePayloadStatByHash">
+        UPDATE core.payload SET
+        <if test="isClick != null and isClick == true ">
+            clicks_total = clicks_total + 1
+        </if>
+        <if test="isView != null and isView == true ">
+            views_total = views_total + 1
+        </if>
+        <if test="isPush != null and isPush == true ">
+            pushed_total = pushed_total + 1
+        </if>
+        WHERE
+        hash = #{hash}
+    </update>
+
+    <select id="getLastPayloadsByApiKeyAndLimitOffset" resultMap="payload">
+        select *
+        from core.payload
+        where api_key = #{apiKey}
+        order by id desc
+        <if test="offset != null and limit != null ">
+            OFFSET #{offset} LIMIT #{limit}
+        </if>
+    </select>
+
+</mapper>

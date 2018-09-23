@@ -1,15 +1,15 @@
-package com.pushgroup.core.service;
+package com.pushgroup.core.service.subscription;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.pushgroup.core.domain.BrowserName;
+import com.pushgroup.core.domain.Payload;
 import com.pushgroup.core.domain.Subscription;
-import com.pushgroup.core.filtering.Condition;
 import com.pushgroup.core.mapper.SubscriptionMapper;
 import com.pushgroup.core.util.Helper;
 import nl.martijndwars.webpush.Notification;
 import nl.martijndwars.webpush.PushService;
 import nl.martijndwars.webpush.Utils;
-import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.slf4j.Logger;
@@ -17,13 +17,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.security.Security;
 import java.util.HashMap;
 import java.util.List;
 
-import static com.pushgroup.core.service.Sender.PushServiceType.KEYS_CHROME;
-import static com.pushgroup.core.service.Sender.PushServiceType.KEYS_FIREFOX;
+import static com.pushgroup.core.service.subscription.Sender.PushServiceType.KEYS_CHROME;
+import static com.pushgroup.core.service.subscription.Sender.PushServiceType.KEYS_FIREFOX;
 
 
 @Service
@@ -46,7 +47,7 @@ public class Sender {
 
 
 
-    public HashMap<Integer, Integer> send(List<Subscription> subscriptions, byte[] payload) {
+    public HashMap<Integer, Integer> send(List<Subscription> subscriptions, Payload payload) {
         LOGGER.info("Start to prepare sending notification");
         LOGGER.info("Number of subscriptions to send is " + subscriptions.size());
 
@@ -64,7 +65,7 @@ public class Sender {
             try {
                 LOGGER.info("Prepare notification for Subscription[{}] and start to send", subscription.getId());
 
-                Notification notification = new Notification(subscription.getEndpoint(), subscription.getP256dh(), subscription.getAuth(), payload);
+                Notification notification = new Notification(subscription.getEndpoint(), subscription.getP256dh(), subscription.getAuth(), payloadToByteArray(payload));
                 HttpResponse httpResponse = pushService.send(notification);
                 int status = httpResponse.getStatusLine().getStatusCode();
 
@@ -73,8 +74,7 @@ public class Sender {
 
                 if(status == HttpStatus.NOT_FOUND.value() || status == HttpStatus.GONE.value()) {
                     LOGGER.error("Status code for Subscription[{}] is {}. Start to delete subscription", subscription, status);
-                    subscribeMapper.deleteSubCatRef(subscription.getId());
-                    subscribeMapper.deleteSubscription(subscription.getId());
+                    subscribeMapper.updateActiveSubscriptionById(subscription.getId(), false);
                     LOGGER.info("Delete Subscription[{}] successfully.", subscription.getId());
                 }
                 //System.out.println(IOUtils.toString(httpResponse.getEntity().getContent(), StandardCharsets.UTF_8));
@@ -118,6 +118,59 @@ public class Sender {
         }
         return null;
     }
+
+    private byte[] payloadToByteArray(Payload payload) {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("title", payload.getTitle());
+        jsonObject.addProperty("body", payload.getBody());
+        jsonObject.add("data", buildDataJson(payload));
+        jsonObject.addProperty("iconUrl", payload.getIconUrl());
+        jsonObject.addProperty("imageUrl", payload.getImageUrl());
+        jsonObject.addProperty("badgeUrl", payload.getBadgeUrl());
+        jsonObject.addProperty("soundUrl", payload.getSoundUrl());
+        jsonObject.addProperty("vibrate", payload.getVibrateAsJson());
+
+        if(!CollectionUtils.isEmpty(payload.getActions())) {
+            JsonArray actArr = new JsonArray();
+            for(Payload.Action action : payload.getActions()) {
+                JsonObject actJson = new JsonObject();
+                actJson.addProperty("action", action.getAction());
+                actJson.addProperty("title", action.getTitle());
+                actJson.addProperty("icon", action.getIconUrl());
+                actArr.add(actJson);
+            }
+            jsonObject.add("actions", actArr);
+        }
+        jsonObject.addProperty("dir", payload.getDir());
+        jsonObject.addProperty("tag", payload.getTag());
+        jsonObject.addProperty("requireInteraction", payload.getRequireInteraction());
+        jsonObject.addProperty("renotify", payload.getRenotify());
+        jsonObject.addProperty("silent", payload.getSilent());
+        jsonObject.addProperty("timestamp", payload.getTimestamp() != null? payload.getTimestamp().toString() : null);
+
+        return jsonObject.toString().getBytes();
+    }
+
+    private JsonObject buildDataJson(Payload payload) {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("offerUrl", payload.getOfferUrl());
+        jsonObject.addProperty("formData", payload.getData());
+        jsonObject.addProperty("hash", payload.getHash());
+        jsonObject.addProperty("apiUrl", Helper.API_URL);
+
+        if(!CollectionUtils.isEmpty(payload.getActions())) {
+            JsonArray actUrls = new JsonArray();
+            for(Payload.Action action : payload.getActions()) {
+                JsonObject actUrl = new JsonObject();
+                actUrl.addProperty("action", action.getAction());
+                actUrl.addProperty("url", action.getUrl());
+                actUrls.add(actUrl);
+            }
+            jsonObject.add("actionsUrls", actUrls);
+        }
+        return jsonObject;
+    }
+
 
     public enum PushServiceType {
         KEYS_CHROME(new PushServiceBrowserSupport(BrowserName.CHROME, "52", "700", "fcm.googleapis.com")),

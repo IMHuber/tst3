@@ -14,12 +14,24 @@ public class RouteRest {
 
     @RequestMapping(method = RequestMethod.GET)
     public String getIndexPage() {
-        return "index";
+        return "index3";
     }
 
 
-    @RequestMapping(method = RequestMethod.GET, path = "/hotoffer")
-    public String getLandingPage(@RequestParam(value = "clickId", required = false)String clickId) {
+    @RequestMapping(method = RequestMethod.GET, path = "/landing")
+    public String getLandingPage(@RequestParam(value = "click_id", required = false)String clickId) {
         return "landing";
+    }
+    @RequestMapping(method = RequestMethod.GET, path = "/landing2")
+    public String getLandingPage2(@RequestParam(value = "click_id", required = false)String clickId) {
+        return "landing2";
+    }
+    @RequestMapping(method = RequestMethod.GET, path = "/landing3")
+    public String getLandingPage3(@RequestParam(value = "click_id", required = false)String clickId) {
+        return "landing3";
+    }
+    @RequestMapping(method = RequestMethod.GET, path = "/landing4")
+    public String getLandingPage4(@RequestParam(value = "click_id", required = false)String clickId) {
+        return "landing4";
     }
 }

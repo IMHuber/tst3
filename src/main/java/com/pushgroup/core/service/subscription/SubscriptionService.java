@@ -1,4 +1,4 @@
-package com.pushgroup.core.service;
+package com.pushgroup.core.service.subscription;
 
 
 import com.pushgroup.core.domain.Payload;
@@ -17,4 +17,6 @@ public interface SubscriptionService {
     List<Subscription> getSubscriptions(List<Condition> conditions);
     List<Subscription> getSubscriptions(List<Condition> conditions, int limit, int offset);
     Long getCount(List<Condition> conditions);
+
+    void updatePayloadStat(Long hash, Boolean isClick, Boolean isView, Boolean isPush);
 }

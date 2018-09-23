@@ -1,0 +1,29 @@
+<div class="main-heading-bar">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-8">
+                <div class="heading">
+                    <h2>Settings</h2>
+                </div>
+            </div>
+
+            <ng-include src="'resources/app/notifications2/notificationButton.html'"></ng-include>
+        </div>
+        <div class="row">
+            <div class="sub-nav-list">
+                <ul>
+                    <li ng-repeat="item in navHeadItems" ng-click="toggleNavHeadBar(item)" style="outline: none;">
+                        <a ui-sref="{{item.state}}" ng-class="{'active': item.active}">
+                            {{item.title}}
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div style="clear:both"></div>
+        </div>
+    </div>
+</div>
+
+<div class="main-content-body">
+    11111
+</div>

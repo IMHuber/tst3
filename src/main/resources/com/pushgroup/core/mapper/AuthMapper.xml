@@ -8,6 +8,7 @@
             <idArg jdbcType="VARCHAR" javaType="string" column="login"/>
             <arg jdbcType="VARCHAR" javaType="string" column="password"/>
             <arg jdbcType="BOOLEAN" javaType="java.lang.Boolean" column="enabled"/>
+            <arg jdbcType="VARCHAR" javaType="string" column="api_key"/>
         </constructor>
     </resultMap>
 
@@ -27,6 +28,12 @@
         from security.authorities a
         join security.roles r on r.id = a.role_id
         where login = #{value}
+    </select>
+
+    <select id="getUserIdByApiKey" resultType="Long">
+        select id
+        from security.users
+        where api_key = #{apiKey}
     </select>
 
 </mapper>

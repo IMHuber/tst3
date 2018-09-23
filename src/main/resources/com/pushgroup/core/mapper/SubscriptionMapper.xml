@@ -23,6 +23,11 @@
         <result property="regionName" column="region_name"></result>
         <result property="osName" column="os_name"></result>
         <result property="osVersion" column="os_version"></result>
+        <result property="referrer" column="referrer"></result>
+        <result property="traffType" column="traff_type"></result>
+        <result property="isActive" column="is_active"></result>
+        <result property="deviceName" column="device_name"></result>
+        <result property="apiKey" column="api_key"></result>
     </resultMap>
 
     <resultMap id="category" type="com.pushgroup.core.domain.Category">
@@ -53,21 +58,29 @@
 
     <insert id="insertSubscription" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         insert into core.subscription
-        (endpoint, expiration_time, p256dh, auth, source_url, landing_language,
-         brw_name, brw_major_version, brw_full_version, brw_language, ip2location_id,
-         ip, country_code, country_name, city_name, region_name,
-         os_name, os_version)
+        (endpoint, expiration_time, p256dh, auth, source_url,
+         landing_language, brw_name, brw_major_version, brw_full_version, brw_language,
+         ip2location_id, ip, country_code, country_name, city_name,
+         region_name, os_name, os_version, referrer, traff_type,
+         device_name, api_key)
         values
-        (#{endpoint}, #{expirationTime}, #{p256dh}, #{auth}, #{sourceUrl}, #{landingLanguage},
-         #{browserName}, #{browserMajorVersion}, #{browserFullVersion}, #{browserLanguage}, #{ip2locationId},
-         #{ip}, #{countryCode}, #{countryName}, #{cityName}, #{regionName},
-         #{osName}, #{osVersion})
+        (#{endpoint}, #{expirationTime}, #{p256dh}, #{auth}, #{sourceUrl},
+         #{landingLanguage}, #{browserName}, #{browserMajorVersion}, #{browserFullVersion}, #{browserLanguage},
+         #{ip2locationId}, #{ip}, #{countryCode}, #{countryName}, #{cityName}, 
+         #{regionName}, #{osName}, #{osVersion}, #{referrer}, #{traffType},
+         case #{isMobile} when true then 'Mobile' else 'Desktop' end, #{apiKey})
     </insert>
 
     <delete id="deleteSubscription">
         delete from core.subscription
         where id = #{subId}
     </delete>
+
+    <update id="updateActiveSubscriptionById">
+        UPDATE core.subscription SET
+        is_active = #{active}
+        WHERE id = #{subId}
+    </update>
 
     <insert id="insertSubCatRef">
         insert into core.subscription_category_ref
@@ -88,65 +101,54 @@
         (#{name}, #{description})
     </insert>
 
-    <insert id="insertPayload" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
-        insert into core.payload
-        (body, icon, image, badge, vibrate,
-         sound, dir, tag, data, require_interaction,
-         renotify, silent, actions, timestamp, offer_url,
-         offer_id, account_name, sub_total, created_by)
-        values
-        (#{body}, #{iconUrl}, #{imageUrl}, #{badgeUrl}, #{vibrateAsJson},
-         #{soundUrl}, #{dir}, #{tag}, #{data}, #{requireInteraction},
-         #{renotify}, #{silent}, #{actionsAsJson}, #{timestamp}, #{offerUrl},
-         #{offerName}, #{accountName}, #{subTotal}, #{createdBy})
-    </insert>
-
-    <!--<insert id="insertBrowser" useGeneratedKeys="true" keyProperty="id" keyColumn="id">-->
-        <!--insert into core.browser-->
-        <!--(name, major_version, full_version, language)-->
-        <!--values-->
-        <!--(#{name}, #{majorVersion}, #{fullVersion}, #{language})-->
-    <!--</insert>-->
-
     <select id="getAllSubscriptions" resultMap="subscription">
         select * from core.subscription
     </select>
 
-    <select id="getSubscriptionsByCondition" resultMap="subscription">
+    <select id="getSubscriptionsByConditionAndActive" resultMap="subscription">
         select distinct(sub.*)
         from core.subscription sub
-        left join core.subscription_category_ref scr on scr.subscription_id = sub.id
-        left join core.category cat on cat.id = scr.category_id
         <if test="condition != null and condition != '' ">
             <where>
-                ${condition}
+                ${condition} and sub.is_active = #{isActive}
+            </where>
+        </if>
+        <if test="condition == null or condition == '' ">
+            <where>
+                sub.is_active = #{isActive}
             </where>
         </if>
         order by id desc
     </select>
 
-    <select id="getSubscriptionsByConditionAndLimitAndOffset" resultMap="subscription">
+    <select id="getActiveSubscriptionsByConditionAndLimitAndOffset" resultMap="subscription">
         select distinct(sub.*)
         from core.subscription sub
-        left join core.subscription_category_ref scr on scr.subscription_id = sub.id
-        left join core.category cat on cat.id = scr.category_id
         <if test="condition != null and condition != '' ">
             <where>
-                ${condition}
+                ${condition} and sub.is_active = #{isActive}
+            </where>
+        </if>
+        <if test="condition == null or condition == '' ">
+            <where>
+                sub.is_active = #{isActive}
             </where>
         </if>
         order by id desc
         OFFSET #{offset} LIMIT #{limit}
     </select>
 
-    <select id="getCountByCondition" resultType="Long">
+    <select id="getActiveCountByCondition" resultType="Long">
         select count(distinct(sub.*))
         from core.subscription sub
-        left join core.subscription_category_ref scr on scr.subscription_id = sub.id
-        left join core.category cat on cat.id = scr.category_id
         <if test="condition != null and condition != '' ">
             <where>
-                ${condition}
+                ${condition} and sub.is_active = #{isActive}
+            </where>
+        </if>
+        <if test="condition == null or condition == '' ">
+            <where>
+                sub.is_active = #{isActive}
             </where>
         </if>
     </select>
@@ -158,6 +160,7 @@
 
     <select id="getAllCategories" resultMap="category">
         select * from core.category
+        order by name asc
     </select>
 
     <select id="getCategoryByName" resultMap="category">
@@ -169,35 +172,41 @@
         select distinct landing_language
         from core.subscription
         where landing_language is not null
+        order by landing_language asc
     </select>
 
     <select id="getAllBrowsersNames" resultType="string">
         select distinct(brw_name)
         from core.subscription
+        order by brw_name asc
     </select>
 
     <select id="getAllMajorVersionsByBrowserName" resultType="string">
         select distinct(brw_major_version)
         from core.subscription
         where lower(brw_name) = lower(#{name})
+        order by brw_major_version asc
     </select>
 
     <select id="getAllBrowserLanguages" resultType="string">
         select distinct(brw_language)
         from core.subscription
         where brw_language is not null
+        order by brw_language asc
     </select>
 
     <select id="getAllOsNames" resultType="string">
         select distinct(os_name)
         from core.subscription
         where os_name is not null
+        order by os_name asc
     </select>
 
     <select id="getAllVersionsByOsName" resultType="string">
         select distinct(os_version)
         from core.subscription
         where lower(os_name) = lower(#{name})
+        order by os_version asc
     </select>
 
     <select id="getIpLocationByIp" resultMap="ipLocation">
@@ -213,16 +222,25 @@
         select distinct(country_code)
         from core.subscription
         where country_code is not null
+        order by country_code asc
     </select>
     <select id="getAllCountryNames" resultType="string">
         select distinct(country_name)
         from core.subscription
         where country_name is not null
+        order by country_name asc
     </select>
     <select id="getAllCityNames" resultType="string">
         select distinct(city_name)
         from core.subscription
         where city_name is not null
+        order by city_name asc
+    </select>
+    <select id="getAllTraffTypes" resultType="string">
+        select distinct(traff_type)
+        from core.subscription
+        where traff_type is not null
+        order by traff_type asc
     </select>
 
 </mapper>

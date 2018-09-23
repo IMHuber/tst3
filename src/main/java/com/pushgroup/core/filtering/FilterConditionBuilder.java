@@ -54,6 +54,9 @@ public class FilterConditionBuilder {
         Condition osCondition = new Condition("sub.os_name", "Os", osNames,
                 Operator.EQUAL.getSign(), osVersions, null, ViewElement.SELECT.name());
 
+        Condition traffTypeCondition = new Condition("sub.traff_type", "Traffic Type", subscribeMapper.getAllTraffTypes(),
+                Operator.EQUAL.getSign(), null, null, ViewElement.SELECT.name());
+
         res.add(idCondition);
         res.add(osCondition);
         res.add(countryNameCondition);
@@ -62,6 +65,7 @@ public class FilterConditionBuilder {
         res.add(browserLangCondition);
         res.add(categoryCondition);
         res.add(landingLangCondition);
+        res.add(traffTypeCondition);
         return res;
     }
 }

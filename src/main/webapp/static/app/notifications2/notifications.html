@@ -1,0 +1,166 @@
+<div class="main-heading-bar">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-8">
+                <div class="heading">
+                    <h2>New Notification</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="main-content-body" style="font-family: inherit;">
+
+    <div style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: center; max-width: 100%">
+
+        <div style="order: 1; border: 1px solid #ddd; background: white; max-width: 600px; flex: 1 auto; margin: 10px;">
+            <div style="padding: 15px;">
+                <md-input-container style="width: 100%;">
+                    <label style="padding-left: 15px; margin-bottom: 0;">Notification Title</label>
+                    <input ng-model="notification.title" style="border: 1px solid #ccc; padding-left: 10px" md-maxlength="50" required>
+
+                    <div ng-messages="notification.title.$error">
+                        <div ng-message="md-maxlength">The Title must be less than 50 characters long.</div>
+                    </div>
+                </md-input-container>
+
+                <md-input-container style="width: 100%; margin-top: 20px; border: 1px solid #ccc; padding-left: 10px">
+                    <label style="padding-left: 15px;">Notification Message</label>
+                    <textarea ng-model="notification.body" rows="4" max-rows="5" required md-maxlength="210"></textarea>
+
+                    <div ng-messages="notification.body.$error">
+                        <div ng-message="required">This is required.</div>
+                        <div ng-message="md-maxlength">The Body must be less than 80(desktop) or 120(mobile) characters long.</div>
+                    </div>
+                </md-input-container>
+
+                <md-input-container style="width: 100%;">
+                    <label style="padding-left: 15px; margin-bottom: 0;">Notification Redirect URL</label>
+                    <input ng-model="notification.url" style="border: 1px solid #ccc; padding-left: 10px" required>
+
+                    <div ng-messages="notification.url.$error">
+                        <div ng-message="required">This is required.</div>
+                    </div>
+                </md-input-container>
+
+                <md-input-container style="width: 100%;">
+                    <md-select ng-model="notification.category" aria-label="Category" style="border: 1px solid #ccc; padding-left: 10px; margin-bottom: 30px;" class="md-no-underline">
+                        <md-option ng-value="0">Ecommerce</md-option>
+                        <md-option ng-value="1" selected="true">blabla</md-option>
+                    </md-select>
+                </md-input-container>
+
+
+                <md-input-container style="width: 100%; margin-top: -20px">
+                    <md-switch ng-model="notification.advanced" aria-label="Switch 1" md-invert class="md-primary">
+                        Advanced Options
+                    </md-switch>
+                </md-input-container>
+
+                <div ng-show="notification.advanced">
+                    <md-input-container style="width: 100%; margin-top: -30px">
+                        <md-switch ng-model="notification.customIcon" aria-label="Switch 1" md-invert class="md-primary">
+                            Custom Icon
+                        </md-switch>
+                    </md-input-container>
+
+                    <md-input-container style="width: 100%; margin-top: -30px" ng-show="notification.customIcon">
+                        <img data-ng-src="data:image/png;base64,{{notification.icon.base64}}" ng-model="updatedPhoto" style="max-width:50%; max-height:50%; padding-bottom: 10px;"/>
+                        <input type="file" aria-label="Icon" ng-model="notification.icon" 
+                               style="border: 1px solid #ccc; padding-left: 10px; margin-bottom: 10px;" base-sixty-four-input>
+                    </md-input-container>
+
+                    <md-input-container style="width: 100%; margin-top: -40px">
+                        <md-switch ng-model="notification.customImage" aria-label="" md-invert class="md-primary">
+                            Custom Image
+                        </md-switch>
+                    </md-input-container>
+
+                    <md-input-container style="width: 100%; margin-top: -30px" ng-show="notification.customImage">
+                        <img data-ng-src="data:image/png;base64,{{notification.image.base64}}" ng-model="updatedPhoto" style="max-width:50%; max-height:50%; padding-bottom: 10px;"/>
+                        <input type="file" aria-label="Image" ng-model="notification.image" style="border: 1px solid #ccc; padding-left: 10px; margin-bottom: 10px;" base-sixty-four-input>
+                    </md-input-container>
+
+                    <md-input-container style="width: 100%; margin-top: -40px">
+                        <md-switch ng-model="notification.interaction" aria-label="Switch 1" md-invert class="md-primary">
+                            Chrome Interaction Settings
+                        </md-switch>
+                    </md-input-container>
+
+                    <md-input-container style="width: 100%; margin-top: -30px;" ng-show="notification.interaction">
+                        <md-select ng-model="notification.interactionValue" aria-label="Interaction" style="border: 1px solid #ccc; padding-left: 10px; margin-bottom: 30px;" class="md-no-underline">
+                            <md-option ng-value="20">Hide after 20 seconds</md-option>
+                            <md-option ng-value="-1" selected="true">Do not hide until user interacts</md-option>
+                        </md-select>
+                    </md-input-container>
+
+                    <md-input-container style="width: 100%; margin-top: -40px">
+                        <md-switch ng-model="notification.expire" aria-label="Switch 1" md-invert class="md-primary">
+                            Expire Notification
+                        </md-switch>
+                    </md-input-container>
+
+                    <md-input-container style="width: 40%; margin-top: -35px" ng-show="notification.expire">
+                        <label style="padding-left: 15px; margin-bottom: 0;">Expire After</label>
+                        <input ng-model="notification.expNumb" aria-label="expNumb" style="border: 1px solid #ccc; padding-left: 10px">
+                    </md-input-container>
+                    <md-input-container style="width: 40%; margin-top: -29px; margin-left: 5px;" ng-show="notification.expire">
+                        <md-select ng-model="notification.expType" aria-label="expType" style="border: 1px solid #ccc; padding-left: 10px; margin-bottom: 30px;" class="md-no-underline">
+                            <md-option ng-value="0" selected="true">Seconds</md-option>
+                            <md-option ng-value="1">Minutes</md-option>
+                            <md-option ng-value="2">Hours</md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
+
+                <md-dialog-actions layout="row">
+                    <button type="submit" class="btn btn-success" ng-disabled="!notification.title || !notification.body || !notification.url">
+                        Send Notification
+                    </button>
+
+                    <button type="submit" class="btn btn-warning" style="margin-left: 10px;">
+                        Save Draft
+                    </button>
+                </md-dialog-actions>
+            </div>
+        </div>
+        
+
+        <div style="order: 2; border: 1px solid #ddd; background: white; max-width: 600px; max-height: 450px; flex: 1 auto; margin: 10px;">
+            <div style="padding: 15px; text-align: center">
+                <h1 style="font-size: 20px;font-weight: 300;line-height: 1.471;padding-left: 15px;">This is how your notification looks</h1>
+
+                <div ng-show="notification.customImage && notification.image" style="width: 364px; height: 180px; margin: auto; overflow: hidden">
+                    <img data-ng-src="data:image/png;base64,{{notification.image.base64}}" style="max-width: 100%; max-height: 100%; width: fit-content; height: fit-content;"/>
+                </div>
+
+                <div style="border: 1px solid #ddd; min-height: 104px; max-width: 364px; margin: auto; display: flex; flex-direction: row; flex-wrap: nowrap;
+                 background: rgba(237, 242, 248, 1);">
+                    <div style="order: 1; width: 30%; margin: auto">
+                        <!--<img data-ng-src="data:image/png;base64,{{notification.icon.base64}}" style="max-width: 100%; max-height: 100%;"/>-->
+
+                        <div style="width:104px; height:104px; overflow: hidden">
+                            <img data-ng-src="data:image/png;base64,{{notification.icon.base64}}" style="height: 100%;"/>
+                        </div>
+
+                    </div>
+                    <div style="order: 1; width: 70%; text-align: left; padding: 3px 10px 5px 10px; position: relative;">
+                        <div style="font-weight: bold; word-wrap: break-word; font-size: 12px; line-height: 19px; padding-top: 10px;">
+                            {{notification.title}}
+                        </div>
+                        <div style="word-wrap: break-word; line-height: 1; font-size: 12px; padding-top: 10px; margin-bottom: 30px;">
+                            {{notification.body.length > 127 && notification.image ? notification.body.substr(0, 127) + '...' : notification.body}}
+                        </div>
+                        <div style="position: absolute; bottom: 0; font-size: 11px; max-width: 80%">
+                            https://tesorin.com
+                        </div>
+                        <!--<span style="bottom: 0; font-size: 11px; word-wrap: break-word;">{{notification.url}}</span>-->
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>

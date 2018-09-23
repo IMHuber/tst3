@@ -1,0 +1,318 @@
+/*https://cdn.special-offers.online/lp/hulu6*/
+
+@keyframes hand{
+    0% {
+        transform: translateY(-5px);
+    }
+
+    50% {
+        transform: translateY(5px);
+    }
+
+    100% {
+        transform: translateY(-5px);
+    }
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-family: sans-serif;
+}
+
+body {
+    background-image: url(../img/18d.png);
+    background-position: top;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+body::after{
+    content: '';
+    display: block;
+    width: 40px;
+    height: 40px;
+    background: url(https://cdn.special-offers.online/lp/hulu6/utloa2.gif) no-repeat 0/100% 100%;
+    position: absolute;
+    top: 32%;
+    left: 39%;
+    transform: translate(-50%, -50%);
+    z-index: 999;
+}
+
+.nav {
+    height: 40px;
+    background: #000;
+    line-height: 40px;
+}
+
+.menu {
+    color: #fff;
+    text-transform: uppercase;
+    text-align: justify;
+    display: flex;
+    justify-content: space-around;
+}
+
+.title {
+    font-size: 1.5rem;
+    text-align: center;
+    text-transform: uppercase;
+    margin: 1rem 0;
+}
+
+.stripe {
+    opacity: 0;
+    width: 100%;
+    height: 40px;
+    position: absolute;
+    line-height: 40px;
+    background: #22a7f0;
+    color: #fff;
+    font-size: 1.4rem;
+    text-align: center;
+    z-index: 5;
+    box-shadow: 0px 0px 18px 2px rgba(0, 0, 0, 0.13);
+}
+
+.stripe1 {
+    top: 0px;
+}
+
+.stripe2 {
+    display: none;
+    top: 0;
+    height: 40px;
+    line-height: 40px;
+}
+
+.stripe3 {
+    display: none;
+    width: 708px;
+    top: 431px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+
+.stripe strong {
+    font-size: 2rem;
+}
+
+.pc-title {
+    font-size: 1.3rem;
+    text-transform: uppercase;
+    text-align: left;
+    color: #404f66;
+    font-weight: bold;
+    margin: 2.3rem 0 1rem 0;
+}
+
+.page-container {
+    width: 95%;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.video {
+    position: relative;
+}
+
+.video::after {
+    content: '';
+    display: block;
+    width: 300px;
+    height: 300px;
+    background: url(https://cdn.special-offers.online/lp/hulu6/utloa2.gif) no-repeat 0/100% 100%;
+    position: absolute;
+    top: 39.5%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 999;
+}
+
+.video img {
+    width: 100%;
+}
+
+.bottom {
+    position: relative;
+    margin: 1rem 0 0 0;
+}
+
+.bottom::after {
+    content: '';
+    display: block;
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    right: 0;
+    top: 0;
+    background: url(https://cdn.special-offers.online/lp/hulu6/hand.png) no-repeat 0/cover;
+    animation-name: hand;
+    animation-duration: .8s;
+    animation-iteration-count: infinite;
+}
+
+.bottom__text {
+    display: table;
+    font-size: 1.38rem;
+    text-align: center;
+}
+
+.container::before {
+    content: '';
+    display: none;
+    width: 522px;
+    height: 370px;
+    position: absolute;
+    top: 170px;
+    left: 35px;
+    background: url(https://cdn.special-offers.online/lp/hulu6/modalx.png) no-repeat 0/contain;
+    z-index: 1;
+}
+
+.container::after {
+    content: '';
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, .55);
+    z-index: 3;
+}
+
+.container--modal::after {
+    display: block;
+}
+
+.container--modal .stripe {
+    background: #fabe58;
+}
+
+.container--modal .stripe2, .container--modal .stripe3 {
+    display: block;
+}
+
+.modal2 {
+    display: none;
+    width: 708px;
+    height: 391px;
+    position: absolute;
+    top: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: url(https://cdn.special-offers.online/lp/hulu6/modal2-t.png) no-repeat 0/contain;
+    z-index: 5;
+}
+
+.modal2::after {
+    content: '';
+    display: block;
+    width: 146px;
+    height: 114px;
+    background: url(https://cdn.special-offers.online/lp/hulu6/arrow.png) no-repeat 0/contain;
+    position: absolute;
+    top: 0;
+    right: 100%;
+}
+
+.container--modal .modal2 {
+    display: block;
+}
+
+.hand {
+    display: block;
+    width: 160px;
+    height: 180px;
+    position: absolute;
+    top: 10%;
+    left: 11.5%;
+    transform: translate(-50%,-20px);
+    background: url(../img/blueArr.png) no-repeat 0/contain;
+    z-index: 6;
+    animation-name: hand;
+    animation-duration: .8s;
+    animation-iteration-count: infinite;
+}
+
+.size-indicator {
+    display: none;
+}
+
+@media screen and (max-width: 939px) {
+    .show-pc {
+        display: none;
+    }
+}
+@media screen and (max-width: 940px) {
+    body{
+        background-image: url(../img/18m.png);
+        background-position: top;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;
+    }
+    body::after{
+        content: '';
+        display: block;
+        width: 40px;
+        height: 40px;
+        background: url(https://cdn.special-offers.online/lp/hulu6/utloa2.gif) no-repeat 0/100% 100%;
+        position: absolute;
+        top: 20%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 999;
+    }
+    .hand {
+        display: block;
+        width: 160px;
+        height: 180px;
+        position: absolute;
+        top: 52%;
+        left: 60%;
+        transform: translate(-50%,-20px);
+        background: url(../img/blueArr.png) no-repeat 0/contain;
+        z-index: 6;
+        animation-name: hand;
+        animation-duration: .8s;
+        animation-iteration-count: infinite;
+    }
+    .size-indicator {
+        display: block;
+    }
+
+    .show-mobile {
+        display: none;
+    }
+
+    .menu {
+        width: 80%;
+        margin: 0 auto;
+        max-width: 1100px;
+    }
+
+    .page-container {
+        width: 65%;
+    }
+
+    .video::after {
+        width: 120px;
+        height: 120px;
+    }
+
+    .container::before {
+        display: block;
+    }
+
+    .bottom {
+        display: none;
+    }
+}

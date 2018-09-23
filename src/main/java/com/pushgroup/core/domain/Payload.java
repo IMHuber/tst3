@@ -1,7 +1,9 @@
 package com.pushgroup.core.domain;
 
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 public class Payload {
     private Long id;
@@ -25,7 +27,14 @@ public class Payload {
     private String offerName;
     private String accountName;
     private Long subTotal;
+    private Long hash;
+    private Long viewsTotal;
+    private Long clicksTotal;
+    private Long pushedTotal;
+    private String category;
     private String createdBy;
+    private String apiKey;
+    private Timestamp createdTs;
 
     public Long getId() {
         return id;
@@ -202,6 +211,63 @@ public class Payload {
     public void setActionsAsJson(String actionsAsJson) {
         this.actionsAsJson = actionsAsJson;
     }
+
+    public Long getHash() {
+        return hash;
+    }
+
+    public void setHash(Long hash) {
+        this.hash = hash;
+    }
+
+    public Long getViewsTotal() {
+        return viewsTotal;
+    }
+
+    public void setViewsTotal(Long viewsTotal) {
+        this.viewsTotal = viewsTotal;
+    }
+
+    public Long getClicksTotal() {
+        return clicksTotal;
+    }
+
+    public void setClicksTotal(Long clicksTotal) {
+        this.clicksTotal = clicksTotal;
+    }
+
+    public Long getPushedTotal() {
+        return pushedTotal;
+    }
+
+    public void setPushedTotal(Long pushedTotal) {
+        this.pushedTotal = pushedTotal;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getApiKey() {
+        return apiKey;
+    }
+
+    public void setApiKey(String apiKey) {
+        this.apiKey = apiKey;
+    }
+
+    public Timestamp getCreatedTs() {
+        return createdTs;
+    }
+
+    public void setCreatedTs(Timestamp createdTs) {
+        this.createdTs = createdTs;
+    }
+    
 
     @Override
     public String toString() {

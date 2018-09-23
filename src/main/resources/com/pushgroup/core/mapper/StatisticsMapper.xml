@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pushgroup.core.mapper.StatisticsMapper">
+
+    <resultMap id="dataGrowth" type="com.pushgroup.core.domain.statistics.DataGrowth">
+        <result property="year" column="year"></result>
+        <result property="month" column="month"></result>
+        <result property="day" column="day"></result>
+        <result property="total" column="total"></result>
+    </resultMap>
+
+    <resultMap id="keyValue" type="com.pushgroup.core.domain.statistics.KeyValue">
+        <result property="key" column="key"></result>
+        <result property="value" column="value"></result>
+    </resultMap>
+
+    <resultMap id="payloadOverall" type="com.pushgroup.core.domain.statistics.PayloadOverall">
+        <result property="campaignsTotal" column="campaigns_total"></result>
+        <result property="viewsTotal" column="views_total"></result>
+        <result property="clicksTotal" column="clicks_total"></result>
+    </resultMap>
+
+
+
+    <select id="getSubscriptionsGrowth" resultMap="dataGrowth">
+        select count(*) as total, to_char(created_ts, 'YYYY') as year, to_char(created_ts, 'MM') as month, to_char(created_ts, 'DD') as day
+        from core.subscription
+        where api_key = #{apiKey}
+        group by year, month, day
+        order by year, month, day asc;
+    </select>
+    <select id="getViewsGrowth" resultMap="dataGrowth">
+        select sum(views_total) as total, to_char(created_ts, 'YYYY') as year, to_char(created_ts, 'MM') as month, to_char(created_ts, 'DD') as day
+        from core.payload
+        where api_key = #{apiKey}
+        group by year, month, day
+        order by year, month, day asc;
+    </select>
+    <select id="getClicksGrowth" resultMap="dataGrowth">
+        select sum(clicks_total) as total, to_char(created_ts, 'YYYY') as year, to_char(created_ts, 'MM') as month, to_char(created_ts, 'DD') as day
+        from core.payload
+        where api_key = #{apiKey}
+        group by year, month, day
+        order by year, month, day asc;
+    </select>
+
+    <select id="getPlatformStats" resultMap="keyValue">
+        select count(*) as value, os_name as key
+        from core.subscription
+        where api_key = #{apiKey}
+        group by os_name
+        order by os_name asc;
+    </select>
+    <select id="getDeviceStats" resultMap="keyValue">
+        select count(*) as value, device_name as key
+        from core.subscription
+        where api_key = #{apiKey}
+        group by mobile;
+    </select>
+    <select id="getBrowserStats" resultMap="keyValue">
+        select count(*) as value, os_name as key
+        from core.subscription
+        where api_key = #{apiKey}
+        group by os_name
+        order by os_name asc;
+    </select>
+
+    <select id="getPayloadOverall" resultMap="payloadOverall">
+        select count(*) as campaigns_total, sum(views_total) views_total, sum(clicks_total) clicks_total
+        from core.payload
+        where api_key = #{apiKey}
+    </select>
+</mapper>

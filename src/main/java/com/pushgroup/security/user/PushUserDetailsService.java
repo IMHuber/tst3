@@ -22,17 +22,22 @@ public class PushUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         LOGGER.info("loadUserByUsername started for '{}'", username);
-        PushUserDetails userDetails = authMapper.loadUserByUsername(username);
-        if(userDetails == null) {
-            LOGGER.error("Can't find user for username = {}", username);
-            throw new UsernameNotFoundException("Can't find user for username = " +username);
+        try {
+            PushUserDetails userDetails = authMapper.loadUserByUsername(username);
+            if(userDetails == null) {
+                LOGGER.error("Can't find user for username = {}", username);
+                throw new UsernameNotFoundException("Can't find user for username = " +username);
+            }
+            List<SimpleGrantedAuthority> auths = loadAuthoritiesByUsername(username);
+            if(CollectionUtils.isEmpty(auths)) {
+                LOGGER.error("Can't find any role for username = {}", username);
+                throw new UsernameNotFoundException("Can't find any role for username = " +username);
+            }
+            return createUserDetails(userDetails, auths);
+        } catch (Exception e) {
+            LOGGER.error("Failed to load username. Error: ", e);
+            throw new RuntimeException("Failed to load username. Error: ", e);
         }
-        List<SimpleGrantedAuthority> auths = loadAuthoritiesByUsername(username);
-        if(CollectionUtils.isEmpty(auths)) {
-            LOGGER.error("Can't find any role for username = {}", username);
-            throw new UsernameNotFoundException("Can't find any role for username = " +username);
-        }
-        return createUserDetails(userDetails, auths);
     }
 
     private List<SimpleGrantedAuthority> loadAuthoritiesByUsername(String username) {
@@ -41,7 +46,7 @@ public class PushUserDetailsService implements UserDetailsService {
 
     private PushUserDetails createUserDetails(PushUserDetails userDetails, List<SimpleGrantedAuthority> authorities) {
         LOGGER.info("createUserDetails started for '{}'", userDetails.getUsername());
-        return new PushUserDetails(userDetails.getUsername(), userDetails.getPassword(), userDetails.isEnabled(), authorities);
+        return new PushUserDetails(userDetails.getUsername(), userDetails.getPassword(), userDetails.isEnabled(), userDetails.getApiKey(), authorities);
     }
 
 }

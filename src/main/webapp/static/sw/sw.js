@@ -4,11 +4,12 @@ self.addEventListener('push', function(event) {
     console.log('[Service Worker] Push had this data.text:' + event.data.text());
 
     var response = JSON.parse(event.data.text());
-
     var title = response.title;
+    var data = response.data;
+
     var options = {
         body: response.body,
-        data: response.data,
+        data: data,
         icon: response.iconUrl,
         image: response.imageUrl,
         sound: response.soundUrl,
@@ -22,6 +23,7 @@ self.addEventListener('push', function(event) {
         vibrate: response.vibrate
     };
 
+    updatePayloadStat(data.apiUrl, data.hash, false, true);
     event.waitUntil(self.registration.showNotification(title, options));
 });
 
@@ -33,6 +35,7 @@ self.addEventListener('notificationclick', function(event) {
 
     var data = event.notification.data;
 
+    updatePayloadStat(data.apiUrl, data.hash, true, false);
     event.notification.close();
 
     if (!event.action) {
@@ -48,6 +51,21 @@ self.addEventListener('notificationclick', function(event) {
             event.waitUntil(clients.openWindow(data.offerUrl));
 
     }
-
-    //event.waitUntil(clients.openWindow(data.offerUrl));
 });
+
+function updatePayloadStat(apiUrl, hash, isClick, isView) {
+
+    fetch(apiUrl + '/statistics/payload', {
+        method: 'put',
+        headers: {
+            "Content-type": "application/json; charset=UTF-8"
+        },
+        body: JSON.stringify({
+            hash: hash,
+            isClick: isClick,
+            isView: isView
+        })
+    }).then(function(response) {
+        console.log(response);
+    });
+}

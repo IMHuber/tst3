@@ -15,6 +15,7 @@ public class SubscriptionDto {
     private Long id;
     private List<String> categoryNames;
     private String sourceUrl;
+    private String referrer;
     private String endpoint;
     private Timestamp expirationTime;
     private Timestamp createdTs;
@@ -23,6 +24,9 @@ public class SubscriptionDto {
     private String landingLanguage;
     private GeoInfoDto geoInfo;
     private OsInfoDto osInfo;
+    private String traffType;
+    private Boolean isMobile;
+    private String apiKey;
 
     public SubscriptionDto() {
     }
@@ -115,6 +119,38 @@ public class SubscriptionDto {
         this.osInfo = osInfo;
     }
 
+    public String getReferrer() {
+        return referrer;
+    }
+
+    public void setReferrer(String referrer) {
+        this.referrer = referrer;
+    }
+
+    public String getTraffType() {
+        return traffType;
+    }
+
+    public void setTraffType(String traffType) {
+        this.traffType = traffType;
+    }
+
+    public Boolean getMobile() {
+        return isMobile;
+    }
+
+    public void setMobile(Boolean mobile) {
+        isMobile = mobile;
+    }
+
+    public String getApiKey() {
+        return apiKey;
+    }
+
+    public void setApiKey(String apiKey) {
+        this.apiKey = apiKey;
+    }
+
     public Subscription toDomain() {
         Subscription res = new Subscription();
         res.setId(this.id);
@@ -136,6 +172,10 @@ public class SubscriptionDto {
         res.setRegionName(this.geoInfo != null? this.geoInfo.regionName : null);
         res.setOsName(this.osInfo != null? this.osInfo.name : null);
         res.setOsVersion(this.osInfo != null? this.osInfo.version : null);
+        res.setReferrer(this.referrer);
+        res.setTraffType(this.traffType);
+        res.setMobile(this.isMobile);
+        res.setApiKey(this.apiKey);
         return res;
     }
 
@@ -157,6 +197,10 @@ public class SubscriptionDto {
         dto.setBrowserInfo(new BrowserInfoDto(sub.getBrowserName(), null, sub.getBrowserMajorVersion(), null, null, sub.getBrowserLanguage()));
         dto.setGeoInfo(new GeoInfoDto(sub.getIp(), sub.getCountryCode(), sub.getCountryName(), sub.getCityName(), sub.getRegionName()));
         dto.setOsInfo(new OsInfoDto(sub.getOsName(), sub.getOsVersion()));
+        dto.setReferrer(sub.getReferrer());
+        dto.setTraffType(sub.getTraffType());
+        dto.setMobile(sub.getMobile());
+        //dto.setApiKey(sub.getApiKey());
         return dto;
     }
 

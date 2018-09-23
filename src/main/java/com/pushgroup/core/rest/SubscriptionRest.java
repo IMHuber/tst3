@@ -6,7 +6,7 @@ import com.pushgroup.core.domain.Payload;
 import com.pushgroup.core.domain.Subscription;
 import com.pushgroup.core.dto.*;
 import com.pushgroup.core.filtering.Condition;
-import com.pushgroup.core.service.SubscriptionService;
+import com.pushgroup.core.service.subscription.SubscriptionService;
 import com.pushgroup.security.user.PushUserDetails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

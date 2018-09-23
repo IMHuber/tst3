@@ -17,7 +17,7 @@ public class FormAuthenticationToken extends AbstractAuthenticationToken {
         super(authorities);
         this.username = username;
         this.password = password;
-        this.userDetails = new PushUserDetails(username, password, true, authorities);
+        this.userDetails = new PushUserDetails(username, password, true, null, authorities);
         super.setAuthenticated(false);
     }
 

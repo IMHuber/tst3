@@ -5,9 +5,9 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>pushgroup</groupId>
-  <artifactId>pushapp</artifactId>
+  <artifactId>evif</artifactId>
   <!--<version>1.0-SNAPSHOT</version>-->
-  <version>bestnews</version>
+  <version>hotnews</version>
   <packaging>war</packaging>
 
   <name>pushapp</name>
@@ -125,6 +125,11 @@
       <groupId>org.webjars</groupId>
       <artifactId>angular-ui-router</artifactId>
       <version>1.0.15</version>
+    </dependency>
+    <dependency>
+      <groupId>org.webjars.bower</groupId>
+      <artifactId>angular-base64-upload</artifactId>
+      <version>0.1.22</version>
     </dependency>
     <dependency>
       <groupId>org.webjars</groupId>

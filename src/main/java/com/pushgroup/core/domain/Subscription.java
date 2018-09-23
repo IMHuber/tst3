@@ -28,8 +28,23 @@ public class Subscription {
     private Long ip2locationId;
     private String osName;
     private String osVersion;
+    private String referrer;
+    private String traffType;
+    private Boolean isMobile;
+    private String apiKey;
+    private Boolean isActive;
+    private String deviceName;
+    
 
     public Subscription() {
+    }
+
+    public String getDeviceName() {
+        return deviceName;
+    }
+
+    public void setDeviceName(String deviceName) {
+        this.deviceName = deviceName;
     }
 
     public Long getId() {
@@ -216,6 +231,46 @@ public class Subscription {
         this.osVersion = osVersion;
     }
 
+    public String getReferrer() {
+        return referrer;
+    }
+
+    public void setReferrer(String referrer) {
+        this.referrer = referrer;
+    }
+
+    public String getTraffType() {
+        return traffType;
+    }
+
+    public void setTraffType(String traffType) {
+        this.traffType = traffType;
+    }
+
+    public Boolean getMobile() {
+        return isMobile;
+    }
+
+    public void setMobile(Boolean mobile) {
+        isMobile = mobile;
+    }
+
+    public String getApiKey() {
+        return apiKey;
+    }
+
+    public void setApiKey(String apiKey) {
+        this.apiKey = apiKey;
+    }
+
+    public Boolean getActive() {
+        return isActive;
+    }
+
+    public void setActive(Boolean active) {
+        isActive = active;
+    }
+
     @Override
     public String toString() {
         return "Subscription{" +
@@ -240,8 +295,10 @@ public class Subscription {
                 ", cityName='" + cityName + '\'' +
                 ", regionName='" + regionName + '\'' +
                 ", ip2locationId=" + ip2locationId +
-                ", osName=" + osName +
-                ", osVersion=" + osVersion +
+                ", osName='" + osName + '\'' +
+                ", osVersion='" + osVersion + '\'' +
+                ", referrer='" + referrer + '\'' +
+                ", traffType=" + traffType +
                 '}';
     }
 }

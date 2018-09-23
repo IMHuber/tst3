@@ -1,6 +1,6 @@
 
 angular
-    .module('app', ['ui.router', 'ngMaterial', 'ngAnimate', 'ngAria'])
+    .module('app', ['ui.router', 'ngMaterial', 'ngAnimate', 'ngAria', 'naif.base64'])
     .config(config)
     .run(run)
     .service('authInterceptor', function($q, $state, $rootScope) {
@@ -43,6 +43,42 @@ function config($stateProvider, $mdIconProvider, $httpProvider){
             url: '/main',
             templateUrl: 'resources/app/main/main.html',
             controller: 'mainController'
+        })
+        .state('dashboard', {
+            title: 'Dashboard',
+            url: '/dashboard',
+            templateUrl: 'resources/app/dashboard/dashboard.html',
+            controller: 'dashboardController'
+        })
+        .state('campaigns', {
+            title: 'Campaigns',
+            url: '/campaigns',
+            templateUrl: 'resources/app/campaigns/campaigns.html',
+            controller: 'campaignsController'
+        })
+        .state('subscribers', {
+            title: 'Subscribers',
+            url: '/subscribers',
+            templateUrl: 'resources/app/subscribers/subscribers.html',
+            controller: 'subscribersController'
+        })
+        .state('filters', {
+            title: 'Filters',
+            url: '/filters',
+            templateUrl: 'resources/app/filters/filters.html',
+            controller: 'filtersController'
+        })
+        .state('settings', {
+            title: 'Settings',
+            url: '/settings',
+            templateUrl: 'resources/app/settings/settings.html',
+            controller: 'settingsController'
+        })
+        .state('notifications', {
+            title: 'Notifications',
+            url: '/notifications',
+            templateUrl: 'resources/app/notifications2/notifications.html',
+            controller: 'notifications2Controller'
         });
     
     $mdIconProvider.defaultIconSet('resources/mdi-icons.svg', 24);
@@ -52,9 +88,11 @@ function config($stateProvider, $mdIconProvider, $httpProvider){
 function run($rootScope, $state, loginDataService) {
     $rootScope.$state = $state;
     $rootScope.logout = logout;
+    $rootScope.toggleNavDef = toggleNavDef;
 
-    $rootScope.apiBaseUrl = '/pushapp-bestnews';
-    //$rootScope.apiBaseUrl = '';
+    //$rootScope.apiBaseUrl = '/evif-hotnews';
+    $rootScope.apiBaseUrl = '';
+
 
     loginDataService.getCurrentUser()
         .then(function (response) {
@@ -66,11 +104,53 @@ function run($rootScope, $state, loginDataService) {
                 //$state.go('main');
             }
         });
+
+    $rootScope.navDefItems = [
+        {
+            title: 'Dashboard',
+            state: 'dashboard',
+            icon: "fa fa-dashboard",
+            active: true
+        },
+        {
+            title: 'Campaigns',
+            state: 'campaigns',
+            icon: "fa fa-paper-plane",
+            active: false
+        },
+        {
+            title: 'Subscribers',
+            state: 'subscribers',
+            icon: "fa fa-user",
+            active: false
+        },
+        {
+            title: 'Filters',
+            state: 'filters',
+            icon: "fa fa-filter",
+            active: false
+        },
+        {
+            title: 'Settings',
+            state: 'settings',
+            icon: "fa fa-cog",
+            active: false
+        }
+    ];
     
     function logout() {
         loginDataService.logout()
             .then(function (value) {
                 $state.go('login');
             });
+    }
+
+    function toggleNavDef(navItem) {
+        angular.forEach($rootScope.navDefItems, function(item, index) {
+            if(navItem.title === item.title)
+                navItem.active = true;
+            else
+                item.active = false;
+        });
     }
 }
